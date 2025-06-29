@@ -112,7 +112,7 @@ const Contact = () => {
                     <Phone className="text-gold-400 mr-4" size={24} />
                     <div>
                       <p className="text-white font-semibold">Phone</p>
-                      <p className="text-gray-300">+1 (555) 123-4567</p>
+                      <p className="text-gray-300">+977-9806076363</p>
                     </div>
                   </div>
 
@@ -120,7 +120,7 @@ const Contact = () => {
                     <Mail className="text-gold-400 mr-4" size={24} />
                     <div>
                       <p className="text-white font-semibold">Email</p>
-                      <p className="text-gray-300">info@prestigebuilders.com</p>
+                      <p className="text-gray-300">suryarajbanshi083@gmail.com</p>
                     </div>
                   </div>
 
@@ -128,7 +128,7 @@ const Contact = () => {
                     <MapPin className="text-gold-400 mr-4 mt-1" size={24} />
                     <div>
                       <p className="text-white font-semibold">Address</p>
-                      <p className="text-gray-300">123 Construction Avenue<br />Building City, BC 12345</p>
+                      <p className="text-gray-300">Jhapa<br />Birtamod</p>
                     </div>
                   </div>
                 </div>
