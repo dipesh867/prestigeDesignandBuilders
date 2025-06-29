@@ -21,6 +21,8 @@ const Navigation = () => {
     { name: 'Home', path: '/' },
     { name: 'What We Build', path: '/what-we-build' },
     { name: 'Gallery', path: '/gallery' },
+    { name: 'Interior Do\'s & Don\'ts', path: '/interior-dos-donts' },
+    { name: 'Custom Interior Styles', path: '/custom-interior-styles' },
     { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -38,14 +40,14 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src="/lovable-uploads/a987861c-be99-4449-b7bd-a8efc95d3c70.png"
+              src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
               alt="Prestige Design and Builders"
               className="h-10 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -61,14 +63,17 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <button className="bg-gold-gradient text-charcoal-900 px-6 py-2 rounded-full font-medium transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-lg hover:transform hover:scale-105">
+            <Link
+              to="/get-quote"
+              className="bg-gold-gradient text-charcoal-900 px-6 py-2 rounded-full font-medium transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-lg hover:transform hover:scale-105"
+            >
               Get Quote
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white hover:text-gold-400 transition-colors"
+            className="lg:hidden text-white hover:text-gold-400 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -77,7 +82,7 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-charcoal-900/95 backdrop-blur-md rounded-lg mt-2 p-4 animate-fade-in">
+          <div className="lg:hidden bg-charcoal-900/95 backdrop-blur-md rounded-lg mt-2 p-4 animate-fade-in">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -92,9 +97,13 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <button className="w-full mt-4 bg-gold-gradient text-charcoal-900 px-6 py-2 rounded-full font-medium transition-all duration-300 hover:bg-gold-gradient-hover">
+            <Link
+              to="/get-quote"
+              className="block w-full mt-4 bg-gold-gradient text-charcoal-900 px-6 py-2 rounded-full font-medium text-center transition-all duration-300 hover:bg-gold-gradient-hover"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               Get Quote
-            </button>
+            </Link>
           </div>
         )}
       </div>

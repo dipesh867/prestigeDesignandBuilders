@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -101,7 +102,7 @@ const Gallery = () => {
           </p>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             {categories.map((category) => (
               <button
                 key={category}
@@ -116,11 +117,18 @@ const Gallery = () => {
               </button>
             ))}
           </div>
+
+          <Link
+            to="/gallery"
+            className="inline-block bg-gold-gradient text-charcoal-900 px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:bg-gold-gradient-hover hover:transform hover:scale-105"
+          >
+            View Full Gallery
+          </Link>
         </div>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project, index) => (
+          {filteredProjects.slice(0, 6).map((project, index) => (
             <div
               key={project.id}
               className={`group cursor-pointer overflow-hidden rounded-xl bg-charcoal-800 hover:transform hover:scale-105 transition-all duration-300 hover:shadow-2xl ${

@@ -19,7 +19,7 @@ const Hero = () => {
       <div className="relative z-10 text-center px-4 animate-fade-in-up">
         <div className="mb-8">
           <img
-            src="/lovable-uploads/a987861c-be99-4449-b7bd-a8efc95d3c70.png"
+            src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
             alt="Prestige Design and Builders"
             className="h-32 w-auto mx-auto mb-8 animate-fade-in"
           />

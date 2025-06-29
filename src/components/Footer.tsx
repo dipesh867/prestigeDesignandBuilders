@@ -1,5 +1,5 @@
 
-import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <img
-              src="/lovable-uploads/a987861c-be99-4449-b7bd-a8efc95d3c70.png"
+              src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
               alt="Prestige Design and Builders"
               className="h-16 w-auto mb-6"
             />
@@ -83,9 +83,12 @@ const Footer = () => {
           <h3 className="text-2xl font-bold text-white mb-4">
             Ready to Start Your <span className="gold-text">Dream Project</span>?
           </h3>
-          <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+          <Link
+            to="/get-quote"
+            className="inline-block bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+          >
             Get Free Quote
-          </button>
+          </Link>
         </div>
 
         {/* Social Media & Copyright */}
@@ -93,9 +96,6 @@ const Footer = () => {
           <div className="flex space-x-6 mb-4 md:mb-0">
             <a href="#" className="text-gray-400 hover:text-gold-400 transition-colors">
               <Facebook size={24} />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-gold-400 transition-colors">
-              <Twitter size={24} />
             </a>
             <a href="#" className="text-gray-400 hover:text-gold-400 transition-colors">
               <Instagram size={24} />
