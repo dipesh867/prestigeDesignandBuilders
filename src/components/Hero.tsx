@@ -1,7 +1,18 @@
 
 import { ArrowDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  const handleGetStarted = () => {
+    // Future: This can be enhanced with analytics tracking or user state management
+    console.log('Get Started button clicked');
+  };
+
+  const handleViewWork = () => {
+    // Future: This can be enhanced with analytics tracking
+    console.log('View Work button clicked');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Parallax */}
@@ -41,12 +52,20 @@ const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-          <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+          <Link
+            to="/get-quote"
+            onClick={handleGetStarted}
+            className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+          >
             Start Your Project
-          </button>
-          <button className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl">
+          </Link>
+          <Link
+            to="/gallery"
+            onClick={handleViewWork}
+            className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl"
+          >
             View Our Work
-          </button>
+          </Link>
         </div>
         
         <div className="animate-bounce">
