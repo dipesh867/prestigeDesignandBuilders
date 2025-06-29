@@ -36,13 +36,13 @@ const Navigation = () => {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-20">
+          {/* Logo - Made bigger */}
           <Link to="/" className="flex items-center space-x-2">
             <img
               src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
               alt="Prestige Design and Builders"
-              className="h-10 w-auto"
+              className="h-16 w-auto transition-all duration-300 hover:scale-105"
             />
           </Link>
 

@@ -12,7 +12,7 @@ const Footer = () => {
             <img
               src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
               alt="Prestige Design and Builders"
-              className="h-16 w-auto mb-6"
+              className="h-20 w-auto mb-6"
             />
             <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
               Premium construction and design company specializing in steel and iron structures. 
