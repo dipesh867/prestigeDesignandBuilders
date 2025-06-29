@@ -9,7 +9,6 @@ import WhatWeBuildPage from "./pages/WhatWeBuild";
 import Gallery from "./pages/Gallery";
 import GetQuote from "./pages/GetQuote";
 import Contact from "./pages/Contact";
-import InteriorDosDonts from "./pages/InteriorDosDonts";
 import CustomInteriorStyles from "./pages/CustomInteriorStyles";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -28,7 +27,6 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/get-quote" element={<GetQuote />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/interior-dos-donts" element={<InteriorDosDonts />} />
           <Route path="/custom-interior-styles" element={<CustomInteriorStyles />} />
           <Route path="/about" element={<About />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
