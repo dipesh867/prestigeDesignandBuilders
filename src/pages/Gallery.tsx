@@ -108,7 +108,7 @@ const Gallery = () => {
     <div className="overflow-x-hidden bg-charcoal-900">
       <Navigation />
       
-      <section ref={sectionRef} className="pt-24 pb-20">
+      <section ref={sectionRef} className="pt-28 pb-20">
         <div className="container mx-auto px-4">
           {/* Page Header */}
           <div className={`text-center mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
@@ -165,29 +165,34 @@ const Gallery = () => {
             ))}
           </div>
 
-          {/* Lightbox Modal */}
+          {/* Lightbox Modal - Fixed close icon */}
           {selectedImage !== null && (
             <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
               <div className="relative w-full max-w-4xl">
+                {/* Close button - Enhanced visibility */}
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="absolute top-4 right-4 text-white hover:text-gold-400 z-10"
+                  className="absolute -top-12 right-0 md:top-4 md:right-4 text-white hover:text-gold-400 z-20 bg-black bg-opacity-50 rounded-full p-2 transition-all duration-300 hover:bg-opacity-70 hover:scale-110"
+                  aria-label="Close modal"
                 >
-                  <X size={32} />
+                  <X size={24} strokeWidth={2} />
                 </button>
                 
+                {/* Navigation buttons */}
                 <button
                   onClick={prevImage}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold-400 z-10"
+                  className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold-400 z-20 bg-black bg-opacity-50 rounded-full p-2 transition-all duration-300 hover:bg-opacity-70 hover:scale-110"
+                  aria-label="Previous image"
                 >
-                  <ChevronLeft size={32} />
+                  <ChevronLeft size={24} strokeWidth={2} />
                 </button>
                 
                 <button
                   onClick={nextImage}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold-400 z-10"
+                  className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gold-400 z-20 bg-black bg-opacity-50 rounded-full p-2 transition-all duration-300 hover:bg-opacity-70 hover:scale-110"
+                  aria-label="Next image"
                 >
-                  <ChevronRight size={32} />
+                  <ChevronRight size={24} strokeWidth={2} />
                 </button>
                 
                 <img
