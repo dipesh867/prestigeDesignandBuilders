@@ -37,17 +37,17 @@ const Hero = () => {
           />
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight break-words">
           {t('hero.title')}
           <br />
           <span className="gold-text">{t('hero.titleAccent')}</span>
         </h1>
         
-        <p className="text-2xl md:text-3xl gold-text font-playfair mb-8 animate-slide-in-right">
+        <p className="text-xl sm:text-2xl md:text-3xl gold-text font-playfair mb-8 animate-slide-in-right px-2">
           {t('hero.tagline')}
         </p>
         
-        <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed px-4">
           {t('hero.description')}
         </p>
         
@@ -55,14 +55,14 @@ const Hero = () => {
           <Link
             to="/get-quote"
             onClick={handleGetStarted}
-            className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+            className="bg-gold-gradient text-charcoal-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
           >
             {t('hero.startProject')}
           </Link>
           <Link
             to="/gallery"
             onClick={handleViewWork}
-            className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl"
+            className="border-2 border-gold-400 text-gold-400 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl"
           >
             {t('hero.viewWork')}
           </Link>

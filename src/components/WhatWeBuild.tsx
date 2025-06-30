@@ -1,8 +1,10 @@
 
 import { Building2, Home, Factory, Shield, Leaf, Clock, DollarSign, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const WhatWeBuild = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -26,46 +28,46 @@ const WhatWeBuild = () => {
   const buildingTypes = [
     {
       icon: Home,
-      title: 'Residential',
-      description: 'Modern homes and residential complexes with steel framework for superior strength and design flexibility.',
+      title: t('whatWeBuild.residential.title'),
+      description: t('whatWeBuild.residential.description'),
     },
     {
       icon: Building2,
-      title: 'Commercial',
-      description: 'Office buildings, retail spaces, and commercial complexes built with precision and contemporary aesthetics.',
+      title: t('whatWeBuild.commercial.title'),
+      description: t('whatWeBuild.commercial.description'),
     },
     {
       icon: Factory,
-      title: 'Industrial',
-      description: 'Warehouses, manufacturing facilities, and industrial structures designed for heavy-duty applications.',
+      title: t('whatWeBuild.industrial.title'),
+      description: t('whatWeBuild.industrial.description'),
     },
   ];
 
   const advantages = [
     {
       icon: Shield,
-      title: 'Durability',
-      description: 'Steel structures offer exceptional strength and longevity, withstanding extreme weather conditions.',
+      title: t('whatWeBuild.advantages.durability.title'),
+      description: t('whatWeBuild.advantages.durability.description'),
     },
     {
       icon: Leaf,
-      title: 'Sustainability',
-      description: 'Eco-friendly construction with recyclable materials and reduced environmental impact.',
+      title: t('whatWeBuild.advantages.sustainability.title'),
+      description: t('whatWeBuild.advantages.sustainability.description'),
     },
     {
       icon: Clock,
-      title: 'Faster Construction',
-      description: 'Pre-fabricated steel components enable quicker assembly and reduced construction time.',
+      title: t('whatWeBuild.advantages.fasterConstruction.title'),
+      description: t('whatWeBuild.advantages.fasterConstruction.description'),
     },
     {
       icon: DollarSign,
-      title: 'Cost-Efficiency',
-      description: 'Lower maintenance costs and faster construction translate to significant savings.',
+      title: t('whatWeBuild.advantages.costEfficiency.title'),
+      description: t('whatWeBuild.advantages.costEfficiency.description'),
     },
     {
       icon: Sparkles,
-      title: 'Modern Aesthetic',
-      description: 'Clean lines and contemporary design possibilities that elevate architectural appeal.',
+      title: t('whatWeBuild.advantages.modernAesthetic.title'),
+      description: t('whatWeBuild.advantages.modernAesthetic.description'),
     },
   ];
 
@@ -74,11 +76,11 @@ const WhatWeBuild = () => {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className={`text-center mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            What We <span className="gold-text">Build</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 break-words">
+            {t('whatWeBuild.title')} <span className="gold-text">{t('whatWeBuild.titleAccent')}</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            We specialize in creating premium steel and iron structures that redefine modern construction standards
+          <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+            {t('whatWeBuild.subtitle')}
           </p>
         </div>
 
@@ -87,22 +89,22 @@ const WhatWeBuild = () => {
           {buildingTypes.map((type, index) => (
             <div
               key={type.title}
-              className={`bg-charcoal-700 p-8 rounded-xl border border-charcoal-600 hover:border-gold-400 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl ${
+              className={`bg-charcoal-700 p-6 sm:p-8 rounded-xl border border-charcoal-600 hover:border-gold-400 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl ${
                 isVisible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               <type.icon className="text-gold-400 mb-4" size={48} />
-              <h3 className="text-2xl font-bold text-white mb-4">{type.title}</h3>
-              <p className="text-gray-300 leading-relaxed">{type.description}</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 break-words">{type.title}</h3>
+              <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{type.description}</p>
             </div>
           ))}
         </div>
 
         {/* Advantages Section */}
         <div className={`${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.6s' }}>
-          <h3 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
-            Why Choose <span className="gold-text">Steel & Iron</span>?
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-12 break-words">
+            {t('whatWeBuild.whyChoose')} <span className="gold-text">{t('whatWeBuild.whyChooseAccent')}</span>
           </h3>
           
           <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -117,8 +119,8 @@ const WhatWeBuild = () => {
                 <div className="bg-gold-gradient p-4 rounded-full inline-flex mb-4 group-hover:shadow-lg transition-shadow duration-300">
                   <advantage.icon className="text-charcoal-900" size={32} />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">{advantage.title}</h4>
-                <p className="text-gray-400 text-sm leading-relaxed">{advantage.description}</p>
+                <h4 className="text-base sm:text-lg font-semibold text-white mb-2 break-words">{advantage.title}</h4>
+                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{advantage.description}</p>
               </div>
             ))}
           </div>
@@ -126,8 +128,8 @@ const WhatWeBuild = () => {
 
         {/* CTA Section */}
         <div className={`text-center mt-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1.4s' }}>
-          <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
-            Explore Our Projects
+          <button className="bg-gold-gradient text-charcoal-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+            {t('whatWeBuild.exploreProjects')}
           </button>
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export type Language = 'en' | 'ne';
@@ -111,7 +110,35 @@ const translations = {
     'contact.getInTouch': 'Get in Touch',
     'contact.followUs': 'Follow Us',
     'contact.ourLocation': 'Our Location',
-    'contact.address': 'Address'
+    'contact.address': 'Address',
+    
+    // What We Build Section
+    'whatWeBuild.title': 'What We',
+    'whatWeBuild.titleAccent': 'Build',
+    'whatWeBuild.subtitle': 'We specialize in creating premium steel and iron structures that redefine modern construction standards',
+    'whatWeBuild.whyChoose': 'Why Choose',
+    'whatWeBuild.whyChooseAccent': 'Steel & Iron',
+    'whatWeBuild.exploreProjects': 'Explore Our Projects',
+    
+    // Building Types
+    'whatWeBuild.residential.title': 'Residential',
+    'whatWeBuild.residential.description': 'Modern homes and residential complexes with steel framework for superior strength and design flexibility.',
+    'whatWeBuild.commercial.title': 'Commercial',
+    'whatWeBuild.commercial.description': 'Office buildings, retail spaces, and commercial complexes built with precision and contemporary aesthetics.',
+    'whatWeBuild.industrial.title': 'Industrial',
+    'whatWeBuild.industrial.description': 'Warehouses, manufacturing facilities, and industrial structures designed for heavy-duty applications.',
+    
+    // Advantages
+    'whatWeBuild.advantages.durability.title': 'Durability',
+    'whatWeBuild.advantages.durability.description': 'Steel structures offer exceptional strength and longevity, withstanding extreme weather conditions.',
+    'whatWeBuild.advantages.sustainability.title': 'Sustainability',
+    'whatWeBuild.advantages.sustainability.description': 'Eco-friendly construction with recyclable materials and reduced environmental impact.',
+    'whatWeBuild.advantages.fasterConstruction.title': 'Faster Construction',
+    'whatWeBuild.advantages.fasterConstruction.description': 'Pre-fabricated steel components enable quicker assembly and reduced construction time.',
+    'whatWeBuild.advantages.costEfficiency.title': 'Cost-Efficiency',
+    'whatWeBuild.advantages.costEfficiency.description': 'Lower maintenance costs and faster construction translate to significant savings.',
+    'whatWeBuild.advantages.modernAesthetic.title': 'Modern Aesthetic',
+    'whatWeBuild.advantages.modernAesthetic.description': 'Clean lines and contemporary design possibilities that elevate architectural appeal.',
   },
   ne: {
     // Navigation
@@ -175,6 +202,36 @@ const translations = {
     'contact.getInTouch': 'सम्पर्कमा रहनुहोस्',
     'contact.followUs': 'हामीलाई फलो गर्नुहोस्',
     'contact.ourLocation': 'हाम्रो स्थान',
-    'contact.address': 'ठेगाना'
+    'contact.address': 'ठेगाना',
+    
+    // What We Build Section
+    'whatWeBuild.title': 'हामी के',
+    'whatWeBuild.titleAccent': 'निर्माण गर्छौं',
+    'whatWeBuild.subtitle': 'हामी आधुनिक निर्माण मापदण्डहरूलाई पुनर्परिभाषित गर्ने प्रीमियम स्टील र फलामका संरचनाहरू सिर्जना गर्नमा विशेषज्ञता राख्छौं',
+    'whatWeBuild.whyChoose': 'किन छान्ने',
+    'whatWeBuild.whyChooseAccent': 'स्टील र फलाम',
+    'whatWeBuild.exploreProjects': 'हाम्रा परियोजनाहरू अन्वेषण गर्नुहोस्',
+    
+    // Building Types
+    'whatWeBuild.residential.title': 'आवासीय',
+    'whatWeBuild.residential.description': 'उत्कृष्ट बल र डिजाइन लचिलोपनको लागि स्टील फ्रेमवर्कका साथ आधुनिक घरहरू र आवासीय परिसरहरू।',
+    'whatWeBuild.commercial.title': 'व्यावसायिक',
+    'whatWeBuild.commercial.description': 'सटीकता र समकालीन सौन्दर्यशास्त्रका साथ निर्मित कार्यालय भवनहरू, खुद्रा स्थानहरू र व्यावसायिक परिसरहरू।',
+    'whatWeBuild.industrial.title': 'औद्योगिक',
+    'whatWeBuild.industrial.description': 'भारी शुल्क अनुप्रयोगहरूको लागि डिजाइन गरिएका गोदामहरू, उत्पादन सुविधाहरू र औद्योगिक संरचनाहरू।',
+    
+    // Advantages
+    'whatWeBuild.advantages.durability.title': 'स्थायित्व',
+    'whatWeBuild.advantages.durability.description': 'स्टील संरचनाहरूले असाधारण बल र दीर्घायु प्रदान गर्छन्, चरम मौसमी अवस्थाहरूको सामना गर्छन्।',
+    'whatWeBuild.advantages.sustainability.title': 'दिगोपना',
+    'whatWeBuild.advantages.sustainability.description': 'पुन: प्रयोग गर्न मिल्ने सामग्री र कम वातावरणीय प्रभावका साथ पर्यावरण-मैत्री निर्माण।',
+    'whatWeBuild.advantages.fasterConstruction.title': 'द्रुत निर्माण',
+    'whatWeBuild.advantages.fasterConstruction.description': 'पूर्व-निर्मित स्टील घटकहरूले छिटो एसेम्बली र कम निर्माण समय सक्षम बनाउँछन्।',
+    'whatWeBuild.advantages.costEfficiency.title': 'लागत-दक्षता',
+    'whatWeBuild.advantages.costEfficiency.description': 'कम मर्मत लागत र छिटो निर्माणले महत्वपूर्ण बचतमा अनुवाद गर्छ।',
+    'whatWeBuild.advantages.modernAesthetic.title': 'आधुनिक सौन्दर्य',
+    'whatWeBuild.advantages.modernAesthetic.description': 'स्वच्छ रेखाहरू र समकालीन डिजाइन सम्भावनाहरू जसले वास्तुकलाको अपीललाई उचाल्छ।',
   }
 };
+
+export {};
