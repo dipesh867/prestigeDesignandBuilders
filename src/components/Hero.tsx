@@ -37,17 +37,17 @@ const Hero = () => {
           />
         </div>
         
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight break-words">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 sm:mb-6 leading-tight break-words px-2">
           {t('hero.title')}
           <br />
-          <span className="gold-text">{t('hero.titleAccent')}</span>
+          <span className="gold-text block mt-2 sm:mt-0 sm:inline">{t('hero.titleAccent')}</span>
         </h1>
         
-        <p className="text-xl sm:text-2xl md:text-3xl gold-text font-playfair mb-8 animate-slide-in-right px-2">
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl gold-text font-playfair mb-8 animate-slide-in-right px-4">
           {t('hero.tagline')}
         </p>
         
-        <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed px-4">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed px-4">
           {t('hero.description')}
         </p>
         

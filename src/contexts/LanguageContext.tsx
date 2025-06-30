@@ -66,6 +66,16 @@ const translations = {
     'hero.startProject': 'Start Your Project',
     'hero.viewWork': 'View Our Work',
     
+    // Gallery Section
+    'gallery.title': 'Our',
+    'gallery.titleAccent': 'Gallery',
+    'gallery.subtitle': 'Explore our portfolio of exceptional steel and iron construction projects',
+    'gallery.viewFullGallery': 'View Full Gallery',
+    'gallery.categories.all': 'All',
+    'gallery.categories.residential': 'Residential',
+    'gallery.categories.commercial': 'Commercial',
+    'gallery.categories.industrial': 'Industrial',
+    
     // Footer
     'footer.description': 'Premium construction and design company specializing in steel and iron structures. We deliver exceptional quality and innovative solutions for residential, commercial, and industrial projects.',
     'footer.tagline': '"Designing at its Best"',
@@ -157,6 +167,16 @@ const translations = {
     'hero.description': 'आवासीय, व्यावसायिक र औद्योगिक परियोजनाहरूको लागि स्थायित्व, दिगोता र आधुनिक सौन्दर्यशास्त्रलाई संयोजन गर्ने प्रीमियम स्टील र फलामका संरचनाहरूमा विशेषज्ञता।',
     'hero.startProject': 'आफ्नो परियोजना सुरु गर्नुहोस्',
     'hero.viewWork': 'हाम्रो काम हेर्नुहोस्',
+    
+    // Gallery Section
+    'gallery.title': 'हाम्रो',
+    'gallery.titleAccent': 'ग्यालेरी',
+    'gallery.subtitle': 'स्टील र फलामका निर्माण परियोजनाहरूको असाधारण पोर्टफोलियो अन्वेषण गर्नुहोस्',
+    'gallery.viewFullGallery': 'पूर्ण ग्यालेरी हेर्नुहोस्',
+    'gallery.categories.all': 'सबै',
+    'gallery.categories.residential': 'आवासीय',
+    'gallery.categories.commercial': 'व्यावसायिक',
+    'gallery.categories.industrial': 'औद्योगिक',
     
     // Footer
     'footer.description': 'स्टील र फलामका संरचनाहरूमा विशेषज्ञता रहेको प्रीमियम निर्माण र डिजाइन कम्पनी। हामी आवासीय, व्यावसायिक र औद्योगिक परियोजनाहरूको लागि असाधारण गुणस्तर र नवाचार समाधानहरू प्रदान गर्छौं।',
