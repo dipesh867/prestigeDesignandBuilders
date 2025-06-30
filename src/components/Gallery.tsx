@@ -2,6 +2,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { projects } from '@/data/projects';
+
+
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -28,51 +31,7 @@ const Gallery = () => {
 
   const categories = ['All', 'Residential', 'Commercial', 'Industrial'];
 
-  const projects = [
-    {
-      id: 1,
-      category: 'Residential',
-      image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Modern Steel Villa',
-      description: 'Contemporary residential design with steel framework'
-    },
-    {
-      id: 2,
-      category: 'Commercial',
-      image: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Corporate Headquarters',
-      description: 'Glass and steel commercial complex'
-    },
-    {
-      id: 3,
-      category: 'Industrial',
-      image: 'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Manufacturing Facility',
-      description: 'Large-scale industrial steel structure'
-    },
-    {
-      id: 4,
-      category: 'Residential',
-      image: 'https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Steel Frame House',
-      description: 'Innovative residential construction'
-    },
-    {
-      id: 5,
-      category: 'Commercial',
-      image: 'https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Office Complex',
-      description: 'Modern commercial building design'
-    },
-    {
-      id: 6,
-      category: 'Industrial',
-      image: 'https://images.unsplash.com/photo-1460574283810-2aab119d8511?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      title: 'Warehouse Complex',
-      description: 'Efficient industrial storage solution'
-    }
-  ];
-
+  
   const filteredProjects = activeCategory === 'All' 
     ? projects 
     : projects.filter(project => project.category === activeCategory);

@@ -61,17 +61,17 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center">
                 <Phone className="text-gold-400 mr-3" size={18} />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300">+977-9806076363</span>
               </div>
               <div className="flex items-center">
                 <Mail className="text-gold-400 mr-3" size={18} />
-                <span className="text-gray-300">info@prestigebuilders.com</span>
+                <span className="text-gray-300">suryarajbanshi083@gmail.com</span>
               </div>
               <div className="flex items-start">
                 <MapPin className="text-gold-400 mr-3 mt-1" size={18} />
                 <span className="text-gray-300">
-                  123 Construction Ave<br />
-                  Building City, BC 12345
+                  Jhapa<br />
+                 Birtamod
                 </span>
               </div>
             </div>
