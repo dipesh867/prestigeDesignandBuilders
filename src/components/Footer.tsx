@@ -1,8 +1,19 @@
 
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
+
+  const navigationItems = [
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.whatWeBuild'), path: '/what-we-build' },
+    { name: t('nav.gallery'), path: '/gallery' },
+    { name: t('nav.about'), path: '/about' },
+    { name: t('nav.contact'), path: '/contact' }
+  ];
+
   return (
     <footer className="bg-charcoal-900 text-white py-16">
       <div className="container mx-auto px-4">
@@ -15,49 +26,30 @@ const Footer = () => {
               className="h-20 w-auto mb-6"
             />
             <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
-              Premium construction and design company specializing in steel and iron structures. 
-              We deliver exceptional quality and innovative solutions for residential, commercial, and industrial projects.
+              {t('footer.description')}
             </p>
             <p className="gold-text font-playfair text-lg italic">
-              "Designing at its Best"
+              {t('footer.tagline')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-semibold mb-6 gold-text">Quick Links</h3>
+            <h3 className="text-xl font-semibold mb-6 gold-text">{t('footer.quickLinks')}</h3>
             <ul className="space-y-3">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-gold-400 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/what-we-build" className="text-gray-300 hover:text-gold-400 transition-colors">
-                  What We Build
-                </Link>
-              </li>
-              <li>
-                <Link to="/gallery" className="text-gray-300 hover:text-gold-400 transition-colors">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-gray-300 hover:text-gold-400 transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-gray-300 hover:text-gold-400 transition-colors">
-                  Contact
-                </Link>
-              </li>
+              {navigationItems.map((item) => (
+                <li key={item.path}>
+                  <Link to={item.path} className="text-gray-300 hover:text-gold-400 transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-semibold mb-6 gold-text">Contact Info</h3>
+            <h3 className="text-xl font-semibold mb-6 gold-text">{t('footer.contactInfo')}</h3>
             <div className="space-y-4">
               <div className="flex items-center">
                 <Phone className="text-gold-400 mr-3" size={18} />
@@ -81,13 +73,13 @@ const Footer = () => {
         {/* Quote Button Section */}
         <div className="text-center py-8 border-t border-b border-charcoal-700 mb-8">
           <h3 className="text-2xl font-bold text-white mb-4">
-            Ready to Start Your <span className="gold-text">Dream Project</span>?
+            {t('footer.readyProject')} <span className="gold-text">{t('footer.dreamProject')}</span>?
           </h3>
           <Link
             to="/get-quote"
             className="inline-block bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
           >
-            Get Free Quote
+            {t('footer.freeQuote')}
           </Link>
         </div>
 
@@ -106,7 +98,7 @@ const Footer = () => {
           </div>
           
           <p className="text-gray-400 text-sm">
-            © 2024 Prestige Design and Builders. All rights reserved.
+            {t('footer.copyright')}
           </p>
         </div>
       </div>
