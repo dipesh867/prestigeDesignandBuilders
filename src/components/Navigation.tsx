@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -27,7 +28,6 @@ const Navigation = () => {
   const navigationItems = [
     { name: t('nav.home'), path: '/' },
     { name: t('nav.whatWeBuild'), path: '/what-we-build' },
-    { name: t('nav.customInteriorStyles'), path: '/custom-interior-styles' },
     { name: t('nav.gallery'), path: '/gallery' },
     { name: t('nav.about'), path: '/about' },
     { name: t('nav.contact'), path: '/contact' }

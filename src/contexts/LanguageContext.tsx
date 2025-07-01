@@ -1,206 +1,31 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+export type Language = 'en' | 'ne';
+
 interface LanguageContextType {
-  language: 'en' | 'ne';
+  language: Language;
   toggleLanguage: () => void;
   t: (key: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const translations = {
-  en: {
-    // Navigation
-    'nav.home': 'Home',
-    'nav.whatWeBuild': 'What We Build',
-    'nav.customInteriorStyles': 'Interior Styles',
-    'nav.gallery': 'Gallery',
-    'nav.about': 'About',
-    'nav.contact': 'Contact',
-    'nav.getQuote': 'Get Quote',
-
-    // Hero Section
-    'hero.title': 'Crafting Excellence in Steel & Iron',
-    'hero.titleAccent': 'Builders',
-    'hero.tagline': 'Where Strength Meets Beauty',
-    'hero.description': 'Transform your vision into reality with our premium steel and iron construction services. From residential homes to commercial complexes, we build structures that stand the test of time.',
-    'hero.startProject': 'Start Your Project',
-    'hero.viewWork': 'View Our Work',
-
-    // Gallery Section
-    'gallery.title': 'Our',
-    'gallery.titleAccent': 'Gallery',
-    'gallery.subtitle': 'Explore our portfolio of completed projects and see the quality craftsmanship that sets us apart',
-    'gallery.viewAll': 'View All Projects',
-
-    // Footer
-    'footer.company': 'Company',
-    'footer.services': 'Services',
-    'footer.contact': 'Contact Info',
-    'footer.followUs': 'Follow Us',
-    'footer.rights': 'All rights reserved.',
-    'footer.about': 'About Us',
-    'footer.whatWeBuild': 'What We Build',
-    'footer.gallery': 'Gallery',
-    'footer.getQuote': 'Get Quote',
-    'footer.residential': 'Residential',
-    'footer.commercial': 'Commercial',
-    'footer.industrial': 'Industrial',
-    'footer.customInteriors': 'Custom Interiors',
-
-    // About Page
-    'about.title': 'About',
-    'about.titleAccent': 'Us',
-    'about.subtitle': 'Building dreams with steel and iron since 2010',
-    'about.description': 'We are a leading construction company specializing in steel and iron structures. With over a decade of experience, we have built a reputation for excellence, quality, and reliability in the construction industry.',
-    'about.mission.title': 'Our Mission',
-    'about.mission.desc': 'To provide superior construction services using steel and iron materials, ensuring durability, safety, and aesthetic appeal in every project we undertake.',
-    'about.vision.title': 'Our Vision',
-    'about.vision.desc': 'To be the premier choice for steel and iron construction, recognized for our innovation, quality craftsmanship, and commitment to customer satisfaction.',
-    'about.values.title': 'Our Values',
-    'about.values.desc': 'Quality, integrity, innovation, and customer satisfaction are the cornerstones of our business philosophy.',
-
-    // Contact Page
-    'contact.title': 'Contact',
-    'contact.titleAccent': 'Us',
-    'contact.subtitle': 'Ready to start your project? Get in touch with our expert team',
-    'contact.info': 'Contact Information',
-    'contact.form': 'Send us a message',
-    'contact.name': 'Your Name',
-    'contact.email': 'Your Email',
-    'contact.phone': 'Your Phone',
-    'contact.message': 'Your Message',
-    'contact.send': 'Send Message',
-
-    // Custom Interior Styles
-    'interiorStyles.title': 'Our Custom',
-    'interiorStyles.titleAccent': 'Interior Styles',
-    'interiorStyles.subtitle': 'Discover our signature interior design styles that perfectly complement our steel and iron structures',
-    'interiorStyles.modernMinimalist': 'Modern Minimalist',
-    'interiorStyles.modernMinimalist.desc': 'Clean lines, neutral colors, and clutter-free spaces that emphasize functionality and simplicity.',
-    'interiorStyles.industrialChic': 'Industrial Chic',
-    'interiorStyles.industrialChic.desc': 'Raw materials, exposed structures, and urban aesthetics that celebrate industrial heritage.',
-    'interiorStyles.contemporaryLuxury': 'Contemporary Luxury',
-    'interiorStyles.contemporaryLuxury.desc': 'Sophisticated elegance with premium materials and cutting-edge design elements.',
-    'interiorStyles.scandinavianComfort': 'Scandinavian Comfort',
-    'interiorStyles.scandinavianComfort.desc': 'Cozy, functional design with light woods, soft textures, and hygge-inspired elements.',
-    'interiorStyles.rusticModern': 'Rustic Modern',
-    'interiorStyles.rusticModern.desc': 'Warm, inviting spaces that blend natural elements with contemporary design principles.',
-    'interiorStyles.urbanLoft': 'Urban Loft',
-    'interiorStyles.urbanLoft.desc': 'Open, airy spaces with high ceilings and a perfect blend of comfort and sophistication.',
-    'interiorStyles.learnMore': 'Learn More About This Style',
-    'interiorStyles.tips.title': 'Smart Interior Design',
-    'interiorStyles.tips.titleAccent': 'Tips',
-    'interiorStyles.tips.subtitle': 'Essential guidelines to create beautiful, functional spaces that stand the test of time',
-    'interiorStyles.dos': "DO'S",
-    'interiorStyles.dos.subtitle': 'Best practices for exceptional interior design',
-    'interiorStyles.donts': "DON'TS",
-    'interiorStyles.donts.subtitle': 'Common mistakes to avoid in interior design',
-    'interiorStyles.cta.title': 'Create Your Perfect',
-    'interiorStyles.cta.titleAccent': 'Interior',
-    'interiorStyles.cta.desc': 'Our expert design team works with you to create custom interiors that reflect your style and complement our architectural excellence. From concept to completion, we bring your vision to life.',
-    'interiorStyles.cta.consultation': 'Schedule Design Consultation',
-    'interiorStyles.cta.portfolio': 'View Our Portfolio'
-  },
-  ne: {
-    // Navigation
-    'nav.home': 'होम',
-    'nav.whatWeBuild': 'हामी के बनाउँछौं',
-    'nav.customInteriorStyles': 'भित्री डिजाइन',
-    'nav.gallery': 'ग्यालेरी',
-    'nav.about': 'हाम्रो बारेमा',
-    'nav.contact': 'सम्पर्क',
-    'nav.getQuote': 'मूल्य लिनुहोस्',
-
-    // Hero Section
-    'hero.title': 'स्टिल र फलामको उत्कृष्टता',
-    'hero.titleAccent': 'निर्माणकर्ता',
-    'hero.tagline': 'जहाँ शक्ति र सुन्दरता मिल्छ',
-    'hero.description': 'हाम्रो प्रिमियम स्टिल र फलाम निर्माण सेवाहरूसँग आफ्नो दृष्टिकोणलाई वास्तविकतामा परिणत गर्नुहोस्। आवासीय घरहरूदेखि व्यावसायिक परिसरहरूसम्म, हामी समयको परीक्षा खडा गर्ने संरचनाहरू निर्माण गर्छौं।',
-    'hero.startProject': 'आफ्नो परियोजना सुरु गर्नुहोस्',
-    'hero.viewWork': 'हाम्रो काम हेर्नुहोस्',
-
-    // Gallery Section
-    'gallery.title': 'हाम्रो',
-    'gallery.titleAccent': 'ग्यालेरी',
-    'gallery.subtitle': 'हाम्रो पूरा भएका परियोजनाहरूको पोर्टफोलियो अन्वेषण गर्नुहोस् र हामीलाई अलग बनाउने गुणस्तरीय शिल्पकारिता हेर्नुहोस्',
-    'gallery.viewAll': 'सबै परियोजनाहरू हेर्नुहोस्',
-
-    // Footer
-    'footer.company': 'कम्पनी',
-    'footer.services': 'सेवाहरू',
-    'footer.contact': 'सम्पर्क जानकारी',
-    'footer.followUs': 'हामीलाई फलो गर्नुहोस्',
-    'footer.rights': 'सबै अधिकार सुरक्षित।',
-    'footer.about': 'हाम्रो बारेमा',
-    'footer.whatWeBuild': 'हामी के बनाउँछौं',
-    'footer.gallery': 'ग्यालेरी',
-    'footer.getQuote': 'मूल्य लिनुहोस्',
-    'footer.residential': 'आवासीय',
-    'footer.commercial': 'व्यावसायिक',
-    'footer.industrial': 'औद्योगिक',
-    'footer.customInteriors': 'कस्टम भित्री सजावट',
-
-    // About Page
-    'about.title': 'हाम्रो',
-    'about.titleAccent': 'बारेमा',
-    'about.subtitle': '२०१० देखि स्टिल र फलामसँग सपनाहरू निर्माण गर्दै',
-    'about.description': 'हामी स्टिल र फलामका संरचनाहरूमा विशेषज्ञता भएको एक अग्रणी निर्माण कम्पनी हौं। एक दशकभन्दा बढी अनुभवका साथ, हामीले निर्माण उद्योगमा उत्कृष्टता, गुणस्तर र विश्वसनीयताको लागि प्रतिष्ठा निर्माण गरेका छौं।',
-    'about.mission.title': 'हाम्रो मिशन',
-    'about.mission.desc': 'स्टिल र फलामका सामग्रीहरू प्रयोग गरेर उत्कृष्ट निर्माण सेवाहरू प्रदान गर्नु, हामीले गर्ने हरेक परियोजनामा स्थायित्व, सुरक्षा र सौन्दर्य आकर्षण सुनिश्चित गर्नु।',
-    'about.vision.title': 'हाम्रो दृष्टिकोण',
-    'about.vision.desc': 'स्टिल र फलाम निर्माणको लागि प्रमुख छनौट बन्नु, हाम्रो नवाचार, गुणस्तरीय शिल्पकारिता र ग्राहक सन्तुष्टिको प्रतिबद्धताको लागि मान्यता प्राप्त।',
-    'about.values.title': 'हाम्रा मूल्यहरू',
-    'about.values.desc': 'गुणस्तर, इमानदारी, नवाचार र ग्राहक सन्तुष्टि हाम्रो व्यापारिक दर्शनका आधारशिलाहरू हुन्।',
-
-    // Contact Page
-    'contact.title': 'सम्पर्क',
-    'contact.titleAccent': 'गर्नुहोस्',
-    'contact.subtitle': 'आफ्नो परियोजना सुरु गर्न तयार हुनुहुन्छ? हाम्रो विशेषज्ञ टोलीसँग सम्पर्क गर्नुहोस्',
-    'contact.info': 'सम्पर्क जानकारी',
-    'contact.form': 'हामीलाई सन्देश पठाउनुहोस्',
-    'contact.name': 'तपाईंको नाम',
-    'contact.email': 'तपाईंको इमेल',
-    'contact.phone': 'तपाईंको फोन',
-    'contact.message': 'तपाईंको सन्देश',
-    'contact.send': 'सन्देश पठाउनुहोस्',
-
-    // Custom Interior Styles
-    'interiorStyles.title': 'हाम्रो कस्टम',
-    'interiorStyles.titleAccent': 'भित्री डिजाइन',
-    'interiorStyles.subtitle': 'हाम्रो स्टिल र फलामका संरचनाहरूसँग पूर्ण रूपमा मेल खाने हाम्रो हस्ताक्षर भित्री डिजाइन शैलीहरू पत्ता लगाउनुहोस्',
-    'interiorStyles.modernMinimalist': 'आधुनिक न्यूनतम',
-    'interiorStyles.modernMinimalist.desc': 'सफा रेखाहरू, तटस्थ रंगहरू, र व्यर्थ रहित स्थानहरू जसले कार्यक्षमता र सरलतालाई जोड दिन्छ।',
-    'interiorStyles.industrialChic': 'औद्योगिक शैली',
-    'interiorStyles.industrialChic.desc': 'कच्चा सामग्री, खुला संरचनाहरू, र शहरी सौन्दर्यशास्त्र जसले औद्योगिक सम्पदालाई मनाउँछ।',
-    'interiorStyles.contemporaryLuxury': 'समकालीन विलासिता',
-    'interiorStyles.contemporaryLuxury.desc': 'प्रिमियम सामग्री र अत्याधुनिक डिजाइन तत्वहरूसँग परिष्कृत सुन्दरता।',
-    'interiorStyles.scandinavianComfort': 'स्क्यान्डिनेभियाई आराम',
-    'interiorStyles.scandinavianComfort.desc': 'हल्का काठको फर्निचर, नरम बनावट, र ह्युग-प्रेरित तत्वहरूसँग आरामदायक, कार्यात्मक डिजाइन।',
-    'interiorStyles.rusticModern': 'देहाती आधुनिक',
-    'interiorStyles.rusticModern.desc': 'प्राकृतिक तत्वहरूलाई समकालीन डिजाइन सिद्धान्तहरूसँग मिलाउने न्यानो, आमन्त्रित स्थानहरू।',
-    'interiorStyles.urbanLoft': 'शहरी लफ्ट',
-    'interiorStyles.urbanLoft.desc': 'उच्च छतहरू र आराम र परिष्कारको उत्तम मिश्रणसँग खुला, हावादार स्थानहरू।',
-    'interiorStyles.learnMore': 'यस शैलीको बारेमा थप जान्नुहोस्',
-    'interiorStyles.tips.title': 'स्मार्ट भित्री डिजाइन',
-    'interiorStyles.tips.titleAccent': 'सुझावहरू',
-    'interiorStyles.tips.subtitle': 'समयको परीक्षा खडा गर्ने सुन्दर, कार्यात्मक स्थानहरू सिर्जना गर्न आवश्यक दिशानिर्देशहरू',
-    'interiorStyles.dos': 'गर्नुपर्ने कुराहरू',
-    'interiorStyles.dos.subtitle': 'असाधारण भित्री डिजाइनको लागि उत्तम अभ्यासहरू',
-    'interiorStyles.donts': 'नगर्नुपर्ने कुराहरू',
-    'interiorStyles.donts.subtitle': 'भित्री डिजाइनमा बच्नुपर्ने सामान्य गल्तीहरू',
-    'interiorStyles.cta.title': 'आफ्नो उत्तम',
-    'interiorStyles.cta.titleAccent': 'भित्री सजावट',
-    'interiorStyles.cta.desc': 'हाम्रो विशेषज्ञ डिजाइन टोलीले तपाईंसँग काम गरेर तपाईंको शैलीलाई प्रतिबिम्बित गर्ने र हाम्रो स्थापत्य उत्कृष्टतालाई पूरक बनाउने कस्टम भित्री सजावट सिर्जना गर्छ। अवधारणादेखि पूर्णतासम्म, हामी तपाईंको दृष्टिकोणलाई जीवन्त बनाउँछौं।',
-    'interiorStyles.cta.consultation': 'डिजाइन परामर्श निर्धारण गर्नुहोस्',
-    'interiorStyles.cta.portfolio': 'हाम्रो पोर्टफोलियो हेर्नुहोस्'
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
   }
+  return context;
 };
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'ne'>(() => {
+interface LanguageProviderProps {
+  children: React.ReactNode;
+}
+
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('language');
-    return (saved as 'en' | 'ne') || 'en';
+    return (saved as Language) || 'en';
   });
 
   useEffect(() => {
@@ -222,10 +47,211 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+const translations = {
+  en: {
+    // Navigation
+    'nav.home': 'Home',
+    'nav.whatWeBuild': 'What We Build',
+    'nav.gallery': 'Gallery',
+    'nav.about': 'About Us',
+    'nav.contact': 'Contact',
+    'nav.getQuote': 'Get Quote',
+    'nav.customInterior': 'Custom Interior Styles',
+    
+    // Hero Section
+    'hero.title': 'PRESTIGE DESIGN',
+    'hero.titleAccent': 'AND BUILDERS',
+    'hero.tagline': 'DESIGNING AT ITS BEST',
+    'hero.description': 'Specializing in premium steel and iron structures that combine durability, sustainability, and modern aesthetics for residential, commercial, and industrial projects.',
+    'hero.startProject': 'Start Your Project',
+    'hero.viewWork': 'View Our Work',
+    
+    // Gallery Section
+    'gallery.title': 'Our',
+    'gallery.titleAccent': 'Gallery',
+    'gallery.subtitle': 'Explore our portfolio of exceptional steel and iron construction projects',
+    'gallery.viewFullGallery': 'View Full Gallery',
+    'gallery.categories.all': 'All',
+    'gallery.categories.residential': 'Residential',
+    'gallery.categories.commercial': 'Commercial',
+    'gallery.categories.industrial': 'Industrial',
+    
+    // Footer
+    'footer.description': 'Premium construction and design company specializing in steel and iron structures. We deliver exceptional quality and innovative solutions for residential, commercial, and industrial projects.',
+    'footer.tagline': '"Designing at its Best"',
+    'footer.quickLinks': 'Quick Links',
+    'footer.contactInfo': 'Contact Info',
+    'footer.readyProject': 'Ready to Start Your',
+    'footer.dreamProject': 'Dream Project',
+    'footer.freeQuote': 'Get Free Quote',
+    'footer.copyright': '© 2024 Prestige Design and Builders. All rights reserved.',
+    
+    // About Page
+    'about.title': 'About',
+    'about.us': 'Us',
+    'about.subtitle': 'Learn about our story, mission, and the team behind Prestige Design and Builders',
+    'about.ourStory': 'Our Story',
+    'about.story1': 'Founded with a vision to revolutionize construction through steel and iron structures, Prestige Design and Builders has been at the forefront of innovative building solutions for over two decades.',
+    'about.story2': 'We believe that exceptional design should be both beautiful and functional, sustainable and durable. Our commitment to excellence has made us a trusted partner for residential, commercial, and industrial projects.',
+    'about.story3': 'Today, we continue to push boundaries, creating structures that stand as testaments to modern engineering and timeless design.',
+    'about.ourMission': 'Our Mission',
+    'about.missionText': 'To create exceptional steel and iron structures that combine innovative design, superior quality, and sustainable practices. We strive to exceed our clients\' expectations while contributing to a more sustainable built environment.',
+    'about.ourValues': 'Our Values',
+    'about.whyChoose': 'Why Choose Us',
+    'about.expertCraftsmanship': 'Expert Craftsmanship',
+    'about.sustainableSolutions': 'Sustainable Solutions',
+    'about.fastConstruction': 'Fast Construction',
+    'about.readyStart': 'Ready to Start Your Project?',
+    'about.discussProject': 'Let\'s discuss how we can bring your vision to life with our expertise in steel and iron construction.',
+    'about.contactToday': 'Contact Us Today',
+    
+    // Contact Page
+    'contact.title': 'Contact',
+    'contact.subtitle': 'Get in touch with our team to discuss your next project',
+    'contact.sendMessage': 'Send us a Message',
+    'contact.messageSent': 'Message Sent!',
+    'contact.getBackSoon': 'We\'ll get back to you soon.',
+    'contact.name': 'Name',
+    'contact.email': 'Email',
+    'contact.phone': 'Phone',
+    'contact.message': 'Message',
+    'contact.messagePlaceholder': 'Tell us about your project or inquiry...',
+    'contact.sendButton': 'Send Message',
+    'contact.getInTouch': 'Get in Touch',
+    'contact.followUs': 'Follow Us',
+    'contact.ourLocation': 'Our Location',
+    'contact.address': 'Address',
+    
+    // What We Build Section
+    'whatWeBuild.title': 'What We',
+    'whatWeBuild.titleAccent': 'Build',
+    'whatWeBuild.subtitle': 'We specialize in creating premium steel and iron structures that redefine modern construction standards',
+    'whatWeBuild.whyChoose': 'Why Choose',
+    'whatWeBuild.whyChooseAccent': 'Steel & Iron',
+    'whatWeBuild.exploreProjects': 'Explore Our Projects',
+    
+    // Building Types
+    'whatWeBuild.residential.title': 'Residential',
+    'whatWeBuild.residential.description': 'Modern homes and residential complexes with steel framework for superior strength and design flexibility.',
+    'whatWeBuild.commercial.title': 'Commercial',
+    'whatWeBuild.commercial.description': 'Office buildings, retail spaces, and commercial complexes built with precision and contemporary aesthetics.',
+    'whatWeBuild.industrial.title': 'Industrial',
+    'whatWeBuild.industrial.description': 'Warehouses, manufacturing facilities, and industrial structures designed for heavy-duty applications.',
+    
+    // Advantages
+    'whatWeBuild.advantages.durability.title': 'Durability',
+    'whatWeBuild.advantages.durability.description': 'Steel structures offer exceptional strength and longevity, withstanding extreme weather conditions.',
+    'whatWeBuild.advantages.sustainability.title': 'Sustainability',
+    'whatWeBuild.advantages.sustainability.description': 'Eco-friendly construction with recyclable materials and reduced environmental impact.',
+    'whatWeBuild.advantages.fasterConstruction.title': 'Faster Construction',
+    'whatWeBuild.advantages.fasterConstruction.description': 'Pre-fabricated steel components enable quicker assembly and reduced construction time.',
+    'whatWeBuild.advantages.costEfficiency.title': 'Cost-Efficiency',
+    'whatWeBuild.advantages.costEfficiency.description': 'Lower maintenance costs and faster construction translate to significant savings.',
+    'whatWeBuild.advantages.modernAesthetic.title': 'Modern Aesthetic',
+    'whatWeBuild.advantages.modernAesthetic.description': 'Clean lines and contemporary design possibilities that elevate architectural appeal.',
+  },
+  ne: {
+    // Navigation
+    'nav.home': 'गृहपृष्ठ',
+    'nav.whatWeBuild': 'हामी के निर्माण गर्छौं',
+    'nav.gallery': 'ग्यालेरी',
+    'nav.about': 'हाम्रो बारेमा',
+    'nav.contact': 'सम्पर्क',
+    'nav.getQuote': 'मूल्य निर्धारण',
+    'nav.customInterior': 'कस्टम इन्टेरियर शैलीहरू',
+    
+    // Hero Section
+    'hero.title': 'प्रेस्टिज डिजाइन',
+    'hero.titleAccent': 'एण्ड बिल्डर्स',
+    'hero.tagline': 'उत्कृष्ट डिजाइनिङ',
+    'hero.description': 'आवासीय, व्यावसायिक र औद्योगिक परियोजनाहरूको लागि स्थायित्व, दिगोता र आधुनिक सौन्दर्यशास्त्रलाई संयोजन गर्ने प्रीमियम स्टील र फलामका संरचनाहरूमा विशेषज्ञता।',
+    'hero.startProject': 'आफ्नो परियोजना सुरु गर्नुहोस्',
+    'hero.viewWork': 'हाम्रो काम हेर्नुहोस्',
+    
+    // Gallery Section
+    'gallery.title': 'हाम्रो',
+    'gallery.titleAccent': 'ग्यालेरी',
+    'gallery.subtitle': 'स्टील र फलामका निर्माण परियोजनाहरूको असाधारण पोर्टफोलियो अन्वेषण गर्नुहोस्',
+    'gallery.viewFullGallery': 'पूर्ण ग्यालेरी हेर्नुहोस्',
+    'gallery.categories.all': 'सबै',
+    'gallery.categories.residential': 'आवासीय',
+    'gallery.categories.commercial': 'व्यावसायिक',
+    'gallery.categories.industrial': 'औद्योगिक',
+    
+    // Footer
+    'footer.description': 'स्टील र फलामका संरचनाहरूमा विशेषज्ञता रहेको प्रीमियम निर्माण र डिजाइन कम्पनी। हामी आवासीय, व्यावसायिक र औद्योगिक परियोजनाहरूको लागि असाधारण गुणस्तर र नवाचार समाधानहरू प्रदान गर्छौं।',
+    'footer.tagline': '"उत्कृष्ट डिजाइनिङ"',
+    'footer.quickLinks': 'द्रुत लिङ्कहरू',
+    'footer.contactInfo': 'सम्पर्क जानकारी',
+    'footer.readyProject': 'तपाईंको सुरु गर्न तयार हुनुहुन्छ',
+    'footer.dreamProject': 'सपनाको परियोजना',
+    'footer.freeQuote': 'निःशुल्क मूल्य निर्धारण पाउनुहोस्',
+    'footer.copyright': '© २०२४ प्रेस्टिज डिजाइन एण्ड बिल्डर्स। सबै अधिकार सुरक्षित।',
+    
+    // About Page
+    'about.title': 'हाम्रो',
+    'about.us': 'बारेमा',
+    'about.subtitle': 'प्रेस्टिज डिजाइन एण्ड बिल्डर्सको पछाडिको कथा, मिशन र टोलीको बारेमा जान्नुहोस्',
+    'about.ourStory': 'हाम्रो कथा',
+    'about.story1': 'स्टील र फलामका संरचनाहरू मार्फत निर्माणमा क्रान्ति ल्याउने दृष्टिकोणका साथ स्थापना भएको, प्रेस्टिज डिजाइन एण्ड बिल्डर्स दुई दशकभन्दा बढी समयदेखि नवाचार निर्माण समाधानहरूको अग्रणी भएको छ।',
+    'about.story2': 'हामी विश्वास गर्छौं कि असाधारण डिजाइन सुन्दर र कार्यात्मक दुवै हुनुपर्छ, दिगो र टिकाउ। उत्कृष्टताप्रतिको हाम्रो प्रतिबद्धताले हामीलाई आवासीय, व्यावसायिक र औद्योगिक परियोजनाहरूको लागि विश्वसनीय साझेदार बनाएको छ।',
+    'about.story3': 'आज, हामी सीमाहरू पार गर्न जारी राख्छौं, आधुनिक इन्जिनियरिङ र कालातीत डिजाइनको प्रमाणका रूपमा खडा हुने संरचनाहरू सिर्जना गर्दै।',
+    'about.ourMission': 'हाम्रो मिशन',
+    'about.missionText': 'नवाचार डिजाइन, उत्कृष्ट गुणस्तर र दिगो अभ्यासहरू संयोजन गर्ने असाधारण स्टील र फलामका संरचनाहरू सिर्जना गर्नु। हामी थप दिगो निर्मित वातावरणमा योगदान गर्दै हाम्रा ग्राहकहरूको अपेक्षाहरू नाघ्न प्रयास गर्छौं।',
+    'about.ourValues': 'हाम्रा मूल्यहरू',
+    'about.whyChoose': 'हामीलाई किन छान्ने',
+    'about.expertCraftsmanship': 'विशेषज्ञ शिल्पकारिता',
+    'about.sustainableSolutions': 'दिगो समाधानहरू',
+    'about.fastConstruction': 'द्रुत निर्माण',
+    'about.readyStart': 'तपाईंको परियोजना सुरु गर्न तयार हुनुहुन्छ?',
+    'about.discussProject': 'स्टील र फलाम निर्माणमा हाम्रो विशेषज्ञताका साथ तपाईंको दृष्टिकोणलाई कसरी जीवन्त बनाउन सक्छौं भनेर छलफल गरौं।',
+    'about.contactToday': 'आज नै सम्पर्क गर्नुहोस्',
+    
+    // Contact Page
+    'contact.title': 'सम्पर्क',
+    'contact.subtitle': 'तपाईंको अर्को परियोजनाको बारेमा छलफल गर्न हाम्रो टोलीसँग सम्पर्क गर्नुहोस्',
+    'contact.sendMessage': 'हामीलाई सन्देश पठाउनुहोस्',
+    'contact.messageSent': 'सन्देश पठाइयो!',
+    'contact.getBackSoon': 'हामी चाँडै तपाईंलाई जवाफ दिनेछौं।',
+    'contact.name': 'नाम',
+    'contact.email': 'इमेल',
+    'contact.phone': 'फोन',
+    'contact.message': 'सन्देश',
+    'contact.messagePlaceholder': 'तपाईंको परियोजना वा सोधपुछको बारेमा बताउनुहोस्...',
+    'contact.sendButton': 'सन्देश पठाउनुहोस्',
+    'contact.getInTouch': 'सम्पर्कमा रहनुहोस्',
+    'contact.followUs': 'हामीलाई फलो गर्नुहोस्',
+    'contact.ourLocation': 'हाम्रो स्थान',
+    'contact.address': 'ठेगाना',
+    
+    // What We Build Section
+    'whatWeBuild.title': 'हामी के',
+    'whatWeBuild.titleAccent': 'निर्माण गर्छौं',
+    'whatWeBuild.subtitle': 'हामी आधुनिक निर्माण मापदण्डहरूलाई पुनर्परिभाषित गर्ने प्रीमियम स्टील र फलामका संरचनाहरू सिर्जना गर्नमा विशेषज्ञता राख्छौं',
+    'whatWeBuild.whyChoose': 'किन छान्ने',
+    'whatWeBuild.whyChooseAccent': 'स्टील र फलाम',
+    'whatWeBuild.exploreProjects': 'हाम्रा परियोजनाहरू अन्वेषण गर्नुहोस्',
+    
+    // Building Types
+    'whatWeBuild.residential.title': 'आवासीय',
+    'whatWeBuild.residential.description': 'उत्कृष्ट बल र डिजाइन लचिलोपनको लागि स्टील फ्रेमवर्कका साथ आधुनिक घरहरू र आवासीय परिसरहरू।',
+    'whatWeBuild.commercial.title': 'व्यावसायिक',
+    'whatWeBuild.commercial.description': 'सटीकता र समकालीन सौन्दर्यशास्त्रका साथ निर्मित कार्यालय भवनहरू, खुद्रा स्थानहरू र व्यावसायिक परिसरहरू।',
+    'whatWeBuild.industrial.title': 'औद्योगिक',
+    'whatWeBuild.industrial.description': 'भारी शुल्क अनुप्रयोगहरूको लागि डिजाइन गरिएका गोदामहरू, उत्पादन सुविधाहरू र औद्योगिक संरचनाहरू।',
+    
+    // Advantages
+    'whatWeBuild.advantages.durability.title': 'स्थायित्व',
+    'whatWeBuild.advantages.durability.description': 'स्टील संरचनाहरूले असाधारण बल र दीर्घायु प्रदान गर्छन्, चरम मौसमी अवस्थाहरूको सामना गर्छन्।',
+    'whatWeBuild.advantages.sustainability.title': 'दिगोपना',
+    'whatWeBuild.advantages.sustainability.description': 'पुन: प्रयोग गर्न मिल्ने सामग्री र कम वातावरणीय प्रभावका साथ पर्यावरण-मैत्री निर्माण।',
+    'whatWeBuild.advantages.fasterConstruction.title': 'द्रुत निर्माण',
+    'whatWeBuild.advantages.fasterConstruction.description': 'पूर्व-निर्मित स्टील घटकहरूले छिटो एसेम्बली र कम निर्माण समय सक्षम बनाउँछन्।',
+    'whatWeBuild.advantages.costEfficiency.title': 'लागत-दक्षता',
+    'whatWeBuild.advantages.costEfficiency.description': 'कम मर्मत लागत र छिटो निर्माणले महत्वपूर्ण बचतमा अनुवाद गर्छ।',
+    'whatWeBuild.advantages.modernAesthetic.title': 'आधुनिक सौन्दर्य',
+    'whatWeBuild.advantages.modernAesthetic.description': 'स्वच्छ रेखाहरू र समकालीन डिजाइन सम्भावनाहरू जसले वास्तुकलाको अपीललाई उचाल्छ।',
   }
-  return context;
 };
+
+export {};
