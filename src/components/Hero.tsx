@@ -33,7 +33,7 @@ const Hero = () => {
           <img
             src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
             alt="Prestige Design and Builders"
-            className="h-40 w-auto mx-auto mb-8 animate-fade-in"
+            className="h-56 w-auto mx-auto mb-4 animate-fade-in"
           />
         </div>
         

@@ -8,17 +8,29 @@ import { APP_CONFIG } from '@/utils/constants';
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+
+      // Detect scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setShowNavbar(false); // scroll down
+      } else {
+        setShowNavbar(true); // scroll up
+      }
+
+      setLastScrollY(currentScrollY);
+      setIsScrolled(currentScrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const handleGetQuote = () => {
     console.log('Get Quote button clicked from navigation');
@@ -35,11 +47,9 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-charcoal-900/45 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 ${
+        showNavbar ? 'translate-y-0' : '-translate-y-full'
+      } ${isScrolled ? 'bg-charcoal-900/45 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-24">
@@ -69,10 +79,9 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            
-            {/* Language Toggle */}
+
             <LanguageToggle />
-            
+
             <Link
               to="/get-quote"
               onClick={handleGetQuote}
@@ -108,12 +117,11 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            
-            {/* Mobile Language Toggle */}
+
             <div className="py-3 flex justify-center">
               <LanguageToggle />
             </div>
-            
+
             <Link
               to="/get-quote"
               onClick={() => {

@@ -16,7 +16,7 @@ const WhatWeBuildPage = () => {
         'Modern architectural aesthetics',
         'Seismic resistance and durability'
       ],
-      image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      image: '../../public/uploads/gallery/2.jpg'
     },
     {
       icon: Building2,
@@ -29,21 +29,21 @@ const WhatWeBuildPage = () => {
         'High-rise building expertise',
         'LEED certified green building options'
       ],
-      image: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+      image: '../../public/uploads/gallery/5.jpg'
     },
-    {
-      icon: Factory,
-      title: 'Industrial Facilities',
-      description: 'Heavy-duty structures built to last',
-      features: [
-        'Manufacturing plants and factories',
-        'Warehouses and distribution centers',
-        'Agricultural and storage buildings',
-        'Specialized industrial applications',
-        'Heavy machinery support structures'
-      ],
-      image: 'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    }
+    // {
+    //   icon: Factory,
+    //   title: 'Industrial Facilities',
+    //   description: 'Heavy-duty structures built to last',
+    //   features: [
+    //     'Manufacturing plants and factories',
+    //     'Warehouses and distribution centers',
+    //     'Agricultural and storage buildings',
+    //     'Specialized industrial applications',
+    //     'Heavy machinery support structures'
+    //   ],
+    //   image: 'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    // }
   ];
 
   const steelAdvantages = [
