@@ -1,10 +1,19 @@
-
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 const CustomInteriorStyles = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleScheduleConsultation = () => {
+    navigate('/contact');
+  };
+
+  const handleViewPortfolio = () => {
+    navigate('/gallery');
+  };
 
   const interiorStyles = [
     {
@@ -246,10 +255,16 @@ const CustomInteriorStyles = () => {
               {t('customInterior.designConsultation')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+              <button 
+                onClick={handleScheduleConsultation}
+                className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+              >
                 {t('customInterior.scheduleConsultation')}
               </button>
-              <button className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl">
+              <button 
+                onClick={handleViewPortfolio}
+                className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl"
+              >
                 {t('whatWeBuildPage.viewPortfolio')}
               </button>
             </div>

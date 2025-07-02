@@ -1,9 +1,16 @@
+
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 
 const About = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleContactClick = () => {
+    navigate('/contact');
+  };
 
   return (
     <div className="overflow-x-hidden bg-charcoal-900">
@@ -95,9 +102,12 @@ const About = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               {t('about.discussProject')}
             </p>
-              <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
-                {t('about.contactToday')}
-              </button>
+            <button 
+              onClick={handleContactClick}
+              className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+            >
+              {t('about.contactToday')}
+            </button>
           </div>
         </div>
       </section>
