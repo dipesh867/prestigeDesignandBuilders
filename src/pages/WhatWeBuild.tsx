@@ -2,13 +2,16 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Building2, Home, Factory, Shield, Leaf, Clock, DollarSign, Sparkles, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const WhatWeBuildPage = () => {
+  const { t } = useLanguage();
+
   const buildingTypes = [
     {
       icon: Home,
-      title: 'Residential Construction',
-      description: 'Creating modern homes that blend strength with style',
+      title: t('whatWeBuildPage.residentialConstruction'),
+      description: t('whatWeBuildPage.residentialDescription'),
       features: [
         'Custom home designs with steel framework',
         'Energy-efficient construction methods',
@@ -20,8 +23,8 @@ const WhatWeBuildPage = () => {
     },
     {
       icon: Building2,
-      title: 'Commercial Buildings',
-      description: 'Professional spaces designed for business success',
+      title: t('whatWeBuildPage.commercialBuildings'),
+      description: t('whatWeBuildPage.commercialDescription'),
       features: [
         'Office complexes and corporate headquarters',
         'Retail and shopping center construction',
@@ -31,50 +34,37 @@ const WhatWeBuildPage = () => {
       ],
       image: '../../public/uploads/gallery/5.jpg'
     },
-    // {
-    //   icon: Factory,
-    //   title: 'Industrial Facilities',
-    //   description: 'Heavy-duty structures built to last',
-    //   features: [
-    //     'Manufacturing plants and factories',
-    //     'Warehouses and distribution centers',
-    //     'Agricultural and storage buildings',
-    //     'Specialized industrial applications',
-    //     'Heavy machinery support structures'
-    //   ],
-    //   image: 'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    // }
   ];
 
   const steelAdvantages = [
     {
       icon: Shield,
-      title: 'Exceptional Durability',
-      description: 'Steel structures can withstand extreme weather conditions, earthquakes, and heavy loads while maintaining structural integrity for decades.',
+      title: t('whatWeBuildPage.exceptionalDurability'),
+      description: t('whatWeBuildPage.durabilityDescription'),
       benefits: ['50+ year lifespan', 'Weather resistant', 'Fire resistant', 'Pest proof']
     },
     {
       icon: Leaf,
-      title: 'Environmental Sustainability',
-      description: 'Steel is 100% recyclable and creates less waste during construction, making it the eco-friendly choice for modern building.',
+      title: t('whatWeBuildPage.environmentalSustainability'),
+      description: t('whatWeBuildPage.sustainabilityDescription'),
       benefits: ['100% recyclable material', 'Reduced construction waste', 'Energy efficient', 'Lower carbon footprint']
     },
     {
       icon: Clock,
-      title: 'Faster Construction Timeline',
-      description: 'Pre-fabricated steel components allow for quicker assembly, reducing construction time by up to 50% compared to traditional methods.',
+      title: t('whatWeBuildPage.fasterConstructionTimeline'),
+      description: t('whatWeBuildPage.fasterTimelineDescription'),
       benefits: ['50% faster construction', 'Weather-independent assembly', 'Precise manufacturing', 'Reduced labor costs']
     },
     {
       icon: DollarSign,
-      title: 'Long-term Cost Efficiency',
-      description: 'Lower maintenance requirements and faster construction translate to significant savings over the building\'s lifetime.',
+      title: t('whatWeBuildPage.longTermCostEfficiency'),
+      description: t('whatWeBuildPage.costEfficiencyDescription'),
       benefits: ['Lower maintenance costs', 'Reduced insurance premiums', 'Energy savings', 'Higher resale value']
     },
     {
       icon: Sparkles,
-      title: 'Design Flexibility',
-      description: 'Steel\'s strength allows for larger open spaces, unique architectural features, and creative design possibilities.',
+      title: t('whatWeBuildPage.designFlexibility'),
+      description: t('whatWeBuildPage.designFlexibilityDescription'),
       benefits: ['Large span capabilities', 'Unique architectural features', 'Easy modifications', 'Modern aesthetics']
     }
   ];
@@ -88,10 +78,10 @@ const WhatWeBuildPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center animate-fade-in-up">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              What We <span className="gold-text">Build</span>
+              {t('whatWeBuildPage.title')} <span className="gold-text">{t('whatWeBuildPage.titleAccent')}</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Specializing in premium steel and iron construction across residential, commercial, and industrial sectors
+              {t('whatWeBuildPage.subtitle')}
             </p>
           </div>
         </div>
@@ -136,10 +126,10 @@ const WhatWeBuildPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Why Choose <span className="gold-text">Steel Construction</span>?
+              {t('whatWeBuildPage.whySteelConstruction')}
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Discover the superior benefits that make steel the material of choice for modern construction
+              {t('whatWeBuildPage.steelAdvantagesSubtitle')}
             </p>
           </div>
 
@@ -181,17 +171,17 @@ const WhatWeBuildPage = () => {
       <section className="py-20 bg-charcoal-900">
         <div className="container mx-auto px-4 text-center animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Build Your <span className="gold-text">Vision</span>?
+            {t('whatWeBuildPage.readyToBuild')} <span className="gold-text">{t('whatWeBuildPage.vision')}</span>?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Contact us today to discuss your project and discover how our steel construction expertise can bring your dreams to life.
+            {t('whatWeBuildPage.contactDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
-              Get Free Consultation
+              {t('whatWeBuildPage.getFreeConsultation')}
             </button>
             <button className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl">
-              View Our Portfolio
+              {t('whatWeBuildPage.viewPortfolio')}
             </button>
           </div>
         </div>
