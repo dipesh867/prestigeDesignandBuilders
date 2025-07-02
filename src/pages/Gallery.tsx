@@ -1,13 +1,13 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { projects } from '@/data/projects';
 
-
-// 👉 Move projects outside component (simulates external or API-sourced data)
-
 const Gallery = () => {
+  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [isVisible, setIsVisible] = useState(false);
@@ -25,8 +25,13 @@ const Gallery = () => {
     return () => observer.disconnect();
   }, []);
 
-  // 🔁 Generate categories dynamically
-  const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category)))];
+  // Categories with translations
+  const categories = [
+    { key: 'All', label: t('gallery.categories.all') },
+    { key: 'Residential', label: t('gallery.categories.residential') },
+    { key: 'Commercial', label: t('gallery.categories.commercial') },
+    { key: 'Industrial', label: t('gallery.categories.industrial') },
+  ];
 
   const filteredProjects =
     activeCategory === 'All' ? projects : projects.filter((p) => p.category === activeCategory);
@@ -52,25 +57,25 @@ const Gallery = () => {
           {/* Page Header */}
           <div className={`text-center mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Project <span className="gold-text">Gallery</span>
+              {t('gallery.title')} <span className="gold-text">{t('gallery.titleAccent')}</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              Explore our portfolio of exceptional steel and iron construction projects
+              {t('gallery.subtitle')}
             </p>
 
-            {/* 🔁 Dynamic Category Filter */}
+            {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-4">
               {categories.map((category) => (
                 <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
+                  key={category.key}
+                  onClick={() => setActiveCategory(category.key)}
                   className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                    activeCategory === category
+                    activeCategory === category.key
                       ? 'bg-gold-gradient text-charcoal-900'
                       : 'bg-charcoal-700 text-white hover:bg-charcoal-600'
                   }`}
                 >
-                  {category}
+                  {category.label}
                 </button>
               ))}
             </div>
@@ -112,7 +117,6 @@ const Gallery = () => {
                 <button
                   onClick={() => setSelectedImage(null)}
                   className="fixed top-6 right-6 md:top-8 md:right-8 z-50 text-white hover:text-gold-400 bg-black bg-opacity-50 rounded-full p-2 transition-all duration-300 hover:bg-opacity-70 hover:scale-110"
-
                   aria-label="Close modal"
                 >
                   <X size={24} strokeWidth={2} />
