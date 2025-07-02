@@ -108,6 +108,7 @@ const translations = {
     
     // Contact Page
     'contact.title': 'Contact',
+    'contact.us': 'Us',
     'contact.subtitle': 'Get in touch with our team to discuss your next project',
     'contact.sendMessage': 'Send us a Message',
     'contact.messageSent': 'Message Sent!',
@@ -293,7 +294,8 @@ const translations = {
     'about.contactToday': 'आज नै सम्पर्क गर्नुहोस्',
     
     // Contact Page
-    'contact.title': 'सम्पर्क',
+    'contact.title': 'सम्पर्क ',
+    'contact.us':'गर्नुहोस्',
     'contact.subtitle': 'तपाईंको अर्को परियोजनाको बारेमा छलफल गर्न हाम्रो टोलीसँग सम्पर्क गर्नुहोस्',
     'contact.sendMessage': 'हामीलाई सन्देश पठाउनुहोस्',
     'contact.messageSent': 'सन्देश पठाइयो!',

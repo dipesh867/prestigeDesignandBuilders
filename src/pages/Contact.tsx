@@ -33,7 +33,7 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {t('contact.title')} <span className="gold-text">Us</span>
+              {t('contact.title')} <span className="gold-text">{t('contact.us')}</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               {t('contact.subtitle')}
