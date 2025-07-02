@@ -210,7 +210,7 @@ const GetQuote = () => {
         </div>
       </section>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
