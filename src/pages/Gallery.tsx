@@ -94,6 +94,7 @@ const Gallery = () => {
               >
                 <div className="relative overflow-hidden">
                   <img
+                    loading='lazy'
                     src={project.image}
                     alt={project.title}
                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"

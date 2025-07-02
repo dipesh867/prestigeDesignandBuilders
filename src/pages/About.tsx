@@ -1,4 +1,3 @@
-
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -96,9 +95,9 @@ const About = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               {t('about.discussProject')}
             </p>
-            <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
-              {t('about.contactToday')}
-            </button>
+              <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+                {t('about.contactToday')}
+              </button>
           </div>
         </div>
       </section>
