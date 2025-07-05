@@ -8,12 +8,12 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Sarah Johnson',
+      name: 'Aashutosh Bhattarai',
       position: 'Property Developer',
-      company: 'Johnson Developments',
+      company: 'Bhattarai Properties',
       content: 'Prestige Design and Builders exceeded our expectations with their steel construction expertise. The quality and attention to detail is unmatched.',
       rating: 5,
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+      image: '../../public/uploads/aashu1.jpg'
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ const Testimonials = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 4500);
 
     return () => clearInterval(timer);
   }, [testimonials.length]);
