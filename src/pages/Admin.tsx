@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Image, MessageSquare, Palette, Save, Trash2, Edit3, Plus, X } from 'lucide-react';
@@ -76,18 +75,30 @@ const Admin = () => {
   // Messages state
   const [customerMessages, setCustomerMessages] = useState<CustomerMessage[]>([]);
 
-  // Keyboard shortcut handler
+  // Fixed keyboard shortcut handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.shiftKey && event.altKey && event.key === 'A') {
+      // Check for Shift + Alt + A combination
+      if (event.shiftKey && event.altKey && event.code === 'KeyA') {
         event.preventDefault();
-        navigate('/admin');
+        console.log('Admin shortcut triggered!'); // Debug log
+        if (!isAuthenticated) {
+          // If not on admin page, navigate to it
+          if (window.location.pathname !== '/admin') {
+            navigate('/admin');
+          }
+        }
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [navigate]);
+    // Add event listener to document
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Cleanup
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [navigate, isAuthenticated]);
 
   // Load mock data
   useEffect(() => {
