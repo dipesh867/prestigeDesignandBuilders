@@ -37,7 +37,7 @@ const About = () => {
               </div>
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  src="../../public/uploads/gallery/1.jpg"
                   alt="Our Story"
                   className="w-full h-80 object-cover rounded-xl"
                 />
@@ -88,7 +88,7 @@ const About = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="text-center">
+          {/* <div className="text-center">
             <h3 className="text-2xl font-bold text-white mb-4">
               {t('about.readyStart')}
             </h3>
@@ -98,7 +98,7 @@ const About = () => {
               <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
                 {t('about.contactToday')}
               </button>
-          </div>
+          </div> */}
         </div>
       </section>
 
