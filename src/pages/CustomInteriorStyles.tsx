@@ -2,10 +2,13 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { X } from 'lucide-react';
 
 const CustomInteriorStyles = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [selectedStyle, setSelectedStyle] = useState<number | null>(null);
 
   const handleScheduleConsultation = () => {
     navigate('/contact');
@@ -21,42 +24,60 @@ const CustomInteriorStyles = () => {
       name: t('customInterior.modernMinimalist'),
       description: t('customInterior.modernMinimalistDescription'),
       image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Open floor plans", "Neutral color palette", "Minimal furniture", "Natural materials"]
+      features: ["Open floor plans", "Neutral color palette", "Minimal furniture", "Natural materials"],
+      budget: "$75,000 - $150,000",
+      timeline: "8-12 weeks",
+      detailedDescription: "Modern minimalist design focuses on simplicity, functionality, and clean lines. This style emphasizes the 'less is more' philosophy, creating serene and uncluttered spaces that promote tranquility and focus."
     },
     {
       id: 2,
       name: t('customInterior.industrialChic'),
       description: t('customInterior.industrialChicDescription'),
       image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Exposed brick walls", "Steel and iron elements", "Concrete finishes", "Edison bulb lighting"]
+      features: ["Exposed brick walls", "Steel and iron elements", "Concrete finishes", "Edison bulb lighting"],
+      budget: "$60,000 - $120,000",
+      timeline: "10-14 weeks",
+      detailedDescription: "Industrial chic combines raw materials with refined touches, creating spaces that feel both edgy and sophisticated. This style celebrates the beauty of unfinished elements and architectural details."
     },
     {
       id: 3,
       name: t('customInterior.contemporaryLuxury'),
       description: t('customInterior.contemporaryLuxuryDescription'),
       image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["High-end finishes", "Smart home technology", "Custom lighting", "Premium textures"]
+      features: ["High-end finishes", "Smart home technology", "Custom lighting", "Premium textures"],
+      budget: "$150,000 - $300,000",
+      timeline: "12-18 weeks",
+      detailedDescription: "Contemporary luxury design represents the pinnacle of modern living, incorporating the finest materials, cutting-edge technology, and bespoke elements to create truly exceptional spaces."
     },
     {
       id: 4,
       name: t('customInterior.scandinavianComfort'),
       description: t('customInterior.scandinavianComfortDescription'),
       image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Light wood furniture", "Cozy textiles", "Natural lighting", "Functional design"]
+      features: ["Light wood furniture", "Cozy textiles", "Natural lighting", "Functional design"],
+      budget: "$50,000 - $100,000",
+      timeline: "6-10 weeks",
+      detailedDescription: "Scandinavian design emphasizes hygge - the Danish concept of cozy contentment. This style creates warm, inviting spaces that prioritize comfort, functionality, and connection with nature."
     },
     {
       id: 5,
       name: t('customInterior.rusticModern'),
       description: t('customInterior.rusticModernDescription'),
       image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Reclaimed wood", "Stone accents", "Earth tones", "Mixed textures"]
+      features: ["Reclaimed wood", "Stone accents", "Earth tones", "Mixed textures"],
+      budget: "$80,000 - $160,000",
+      timeline: "10-16 weeks",
+      detailedDescription: "Rustic modern design blends the warmth of traditional country style with contemporary sophistication, creating spaces that feel both timeless and current."
     },
     {
       id: 6,
       name: t('customInterior.urbanLoft'),
       description: t('customInterior.urbanLoftDescription'),
       image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["High ceilings", "Open layouts", "Urban views", "Flexible spaces"]
+      features: ["High ceilings", "Open layouts", "Urban views", "Flexible spaces"],
+      budget: "$90,000 - $180,000",
+      timeline: "8-14 weeks",
+      detailedDescription: "Urban loft design maximizes space and light, creating dynamic living environments that adapt to modern city living while maintaining an artistic, warehouse-inspired aesthetic."
     }
   ];
 
@@ -146,8 +167,9 @@ const CustomInteriorStyles = () => {
             {interiorStyles.map((style, index) => (
               <div
                 key={style.id}
-                className={`bg-charcoal-800 rounded-2xl overflow-hidden shadow-2xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up`}
+                className={`bg-charcoal-800 rounded-2xl overflow-hidden shadow-2xl hover:transform hover:scale-105 transition-all duration-300 animate-fade-in-up cursor-pointer`}
                 style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => setSelectedStyle(style.id)}
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -176,8 +198,19 @@ const CustomInteriorStyles = () => {
                     </div>
                   </div>
                   
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="text-center">
+                      <span className="text-gray-400 text-sm block">Budget Range</span>
+                      <span className="gold-text font-semibold">{style.budget}</span>
+                    </div>
+                    <div className="text-center">
+                      <span className="text-gray-400 text-sm block">Timeline</span>
+                      <span className="text-white font-semibold">{style.timeline}</span>
+                    </div>
+                  </div>
+                  
                   <button className="w-full bg-gold-gradient text-charcoal-900 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-gold-gradient-hover hover:transform hover:scale-105">
-                    {t('customInterior.learnMoreStyle')}
+                    Click to Learn More
                   </button>
                 </div>
               </div>
@@ -185,6 +218,82 @@ const CustomInteriorStyles = () => {
           </div>
         </div>
       </section>
+
+      {/* Style Detail Modal */}
+      {selectedStyle && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="bg-charcoal-800 rounded-2xl max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setSelectedStyle(null)}
+              className="absolute top-4 right-4 text-white hover:text-gold-400 bg-charcoal-700 rounded-full p-2 transition-all duration-300 hover:bg-charcoal-600 z-10"
+            >
+              <X size={24} />
+            </button>
+            
+            {(() => {
+              const style = interiorStyles.find(s => s.id === selectedStyle);
+              if (!style) return null;
+              
+              return (
+                <div className="p-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                      <img
+                        src={style.image}
+                        alt={style.name}
+                        className="w-full h-80 object-cover rounded-xl"
+                      />
+                    </div>
+                    
+                    <div>
+                      <h2 className="text-3xl font-bold text-white mb-4">{style.name}</h2>
+                      <p className="text-gray-300 mb-6 leading-relaxed">{style.detailedDescription}</p>
+                      
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="bg-charcoal-700 p-4 rounded-lg text-center">
+                          <span className="text-gray-400 text-sm block mb-1">Budget Range</span>
+                          <span className="gold-text font-bold text-lg">{style.budget}</span>
+                        </div>
+                        <div className="bg-charcoal-700 p-4 rounded-lg text-center">
+                          <span className="text-gray-400 text-sm block mb-1">Timeline</span>
+                          <span className="text-white font-bold text-lg">{style.timeline}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-6">
+                        <h4 className="text-white font-semibold mb-3">Key Features:</h4>
+                        <div className="grid grid-cols-1 gap-2">
+                          {style.features.map((feature, featureIndex) => (
+                            <div key={featureIndex} className="flex items-center bg-charcoal-700 p-3 rounded-lg">
+                              <div className="w-3 h-3 bg-gold-400 rounded-full mr-3"></div>
+                              <span className="text-gray-300">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <button 
+                          onClick={handleScheduleConsultation}
+                          className="flex-1 bg-gold-gradient text-charcoal-900 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-gold-gradient-hover"
+                        >
+                          Schedule Consultation
+                        </button>
+                        <button 
+                          onClick={handleViewPortfolio}
+                          className="flex-1 border-2 border-gold-400 text-gold-400 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900"
+                        >
+                          View Portfolio
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
       {/* Interior Design Do's & Don'ts Section */}
       <section className="py-20 bg-charcoal-800">
