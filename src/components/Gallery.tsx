@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -107,9 +108,9 @@ const Gallery = () => {
           </Link>
         </div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid - Show only 6 images */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.slice(0, 12).map((project, index) => (
+          {filteredProjects.slice(0, 6).map((project, index) => (
             <div
               key={project.id}
               data-index={index}

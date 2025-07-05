@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Building2, Home, Factory, Shield, Leaf, Clock, DollarSign, Sparkles, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Link } from 'react-router-dom';
 
 const WhatWeBuildPage = () => {
   const { t } = useLanguage();
@@ -177,12 +178,18 @@ const WhatWeBuildPage = () => {
             {t('whatWeBuildPage.contactDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
+            <Link
+              to="/contact"
+              className="bg-gold-gradient text-charcoal-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105"
+            >
               {t('whatWeBuildPage.getFreeConsultation')}
-            </button>
-            <button className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl">
+            </Link>
+            <Link
+              to="/gallery"
+              className="border-2 border-gold-400 text-gold-400 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-gold-400 hover:text-charcoal-900 hover:shadow-xl"
+            >
               {t('whatWeBuildPage.viewPortfolio')}
-            </button>
+            </Link>
           </div>
         </div>
       </section>
