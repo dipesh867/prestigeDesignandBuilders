@@ -144,7 +144,7 @@ const Gallery = () => {
             <div className="relative w-full max-w-4xl">
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 text-white hover:text-gold-400 z-10"
+                  className="fixed top-6 right-6 md:top-8 md:right-8 z-50 text-white hover:text-gold-400 bg-black bg-opacity-50 rounded-full p-2 transition-all duration-300 hover:bg-opacity-70 hover:scale-110"
                 aria-label="Close modal"
               >
                 <X size={32} />
