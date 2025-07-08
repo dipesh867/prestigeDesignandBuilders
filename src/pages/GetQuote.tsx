@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -169,13 +170,15 @@ const GetQuote = () => {
               <div>
                 <Label htmlFor="file-upload" className="text-white">{t('getQuote.fileUpload')}</Label>
                 <div className="mt-2">
-                  <Input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    className="w-full bg-charcoal-700 border-charcoal-600 text-white file:bg-gold-gradient file:text-charcoal-900 file:border-0 file:rounded file:px-4 file:py-2 file:mr-4 file:cursor-pointer"
-                  />
+                  <label htmlFor="file-upload" className="relative cursor-pointer">
+                    <Input
+                      id="file-upload"
+                      type="file"
+                      multiple
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      className="w-full bg-charcoal-700 border-charcoal-600 text-white file:bg-gold-gradient file:text-charcoal-900 file:border-0 file:rounded-md file:px-4 file:py-2 file:mr-4 file:cursor-pointer file:hover:bg-gold-gradient-hover"
+                    />
+                  </label>
                 </div>
                 <p className="text-sm text-gray-400 mt-1">{t('getQuote.fileUploadDescription')}</p>
               </div>
