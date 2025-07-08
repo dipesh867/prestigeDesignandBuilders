@@ -67,7 +67,7 @@ const Hero = () => {
             {t('hero.viewWork')}
           </Link>
           <a
-      href="tel:+9779812345678"
+      href="tel:+977 9806076363 "
       className="bg-gold-gradient text-charcoal-900 px-6 py-3 rounded-full text-lg font-bold shadow-lg hover:bg-gold-400 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105 transition-all duration-500 "
     >
       📞 Call Now
