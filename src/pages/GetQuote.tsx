@@ -168,13 +168,15 @@ const GetQuote = () => {
 
               <div>
                 <Label htmlFor="file-upload" className="text-white">{t('getQuote.fileUpload')}</Label>
-                <Input
-                  id="file-upload"
-                  type="file"
-                  multiple
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                  className="bg-charcoal-700 border-charcoal-600 text-white file:bg-gold-gradient file:text-charcoal-900 file:border-0 file:rounded file:px-4 file:py-2"
-                />
+                <div className="mt-2">
+                  <Input
+                    id="file-upload"
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    className="w-full bg-charcoal-700 border-charcoal-600 text-white file:bg-gold-gradient file:text-charcoal-900 file:border-0 file:rounded file:px-4 file:py-2 file:mr-4 file:cursor-pointer"
+                  />
+                </div>
                 <p className="text-sm text-gray-400 mt-1">{t('getQuote.fileUploadDescription')}</p>
               </div>
 

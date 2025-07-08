@@ -29,11 +29,11 @@ const Hero = () => {
       
       {/* Content */}
       <div className="relative z-10 text-center px-4 animate-fade-in-up">
-        <div className="mb-8">
+        <div className="mb-6">
           <img
             src="/lovable-uploads/2a4b4929-30ac-4dbf-88f6-bacc350a60e4.png"
             alt="Prestige Design and Builders"
-            className="h-56 w-auto mx-auto mb-4 animate-fade-in"
+            className="h-64 w-auto mx-auto mb-4 animate-fade-in"
           />
         </div>
         

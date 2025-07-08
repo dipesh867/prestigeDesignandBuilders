@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Upload,
   Image,
@@ -12,7 +11,6 @@ import {
   Plus,
   X,
   Home,
-  
 } from "lucide-react";
 import {
   Card,
@@ -186,7 +184,7 @@ const Admin = () => {
         title: "Login Successful",
         description: "Welcome to the admin panel!",
         variant: "default",
-        duration:3000,
+        duration: 3000,
       });
     } else {
       toast({
@@ -379,14 +377,6 @@ const Admin = () => {
           <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
           <div className="flex items-center space-x-4">
             <span className="text-gray-400">Prestige Builders Admin</span>
-            <Button 
-            variant="outline"
-              onClick={handleLogout}
-              className="border-charcoal-600 text-white hover:bg-charcoal-700"
-            >
-              Login
-            </Button>
-
             <Button
               variant="outline"
               onClick={() => {
