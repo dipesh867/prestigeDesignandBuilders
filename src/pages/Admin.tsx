@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import {
@@ -24,14 +25,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 interface GalleryItem {
   id: string;
@@ -81,6 +74,7 @@ const Admin = () => {
     image: "",
     category: "Residential",
   });
+  const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
 
   // Interior styles state
   const [interiorStyles, setInteriorStyles] = useState<InteriorStyle[]>([]);
@@ -93,6 +87,7 @@ const Admin = () => {
     timeline: "",
     features: [""],
   });
+  const [styleImageFile, setStyleImageFile] = useState<File | null>(null);
 
   // Messages state
   const [customerMessages, setCustomerMessages] = useState<CustomerMessage[]>(
@@ -103,7 +98,7 @@ const Admin = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Check for Shift + Alt + A combination
-      if (event.shiftKey && event.altKey && event.key === "a") {
+      if (event.shiftKey && event.altKey && event.code === "KeyA") {
         event.preventDefault();
         console.log("Admin shortcut triggered!"); // Debug log
         if (!isAuthenticated) {
@@ -212,14 +207,39 @@ const Admin = () => {
     });
   };
 
+  const handleGalleryImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setGalleryImageFile(file);
+      // Create a temporary URL for preview
+      const imageUrl = URL.createObjectURL(file);
+      setNewGalleryItem({
+        ...newGalleryItem,
+        image: imageUrl,
+      });
+    }
+  };
+
+  const handleStyleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setStyleImageFile(file);
+      // Create a temporary URL for preview
+      const imageUrl = URL.createObjectURL(file);
+      setNewInteriorStyle({
+        ...newInteriorStyle,
+        image: imageUrl,
+      });
+    }
+  };
+
   const handleAddGalleryItem = () => {
     if (!newGalleryItem.title || !newGalleryItem.image) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields.",
+        description: "Please fill in all required fields and upload an image.",
         variant: "destructive",
-              duration: 3000,
-
+        duration: 3000,
       });
       return;
     }
@@ -236,12 +256,12 @@ const Admin = () => {
       image: "",
       category: "Residential",
     });
+    setGalleryImageFile(null);
 
     toast({
       title: "Gallery Item Added",
       description: "New gallery item has been added successfully.",
-            duration: 2000,
-
+      duration: 2000,
     });
   };
 
@@ -249,10 +269,9 @@ const Admin = () => {
     if (!newInteriorStyle.name || !newInteriorStyle.image) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields.",
+        description: "Please fill in all required fields and upload an image.",
         variant: "destructive",
-              duration: 3000,
-
+        duration: 3000,
       });
       return;
     }
@@ -272,6 +291,7 @@ const Admin = () => {
       timeline: "",
       features: [""],
     });
+    setStyleImageFile(null);
 
     toast({
       title: "Interior Style Added",
@@ -284,8 +304,7 @@ const Admin = () => {
     toast({
       title: "Item Deleted",
       description: "Gallery item has been deleted.",
-            duration: 3000,
-
+      duration: 3000,
     });
   };
 
@@ -294,8 +313,7 @@ const Admin = () => {
     toast({
       title: "Style Deleted",
       description: "Interior style has been deleted.",
-            duration: 3000,
-
+      duration: 3000,
     });
   };
 
@@ -304,8 +322,7 @@ const Admin = () => {
     toast({
       title: "Message Deleted",
       description: "Customer message has been deleted.",
-            duration: 3000,
-
+      duration: 3000,
     });
   };
 
@@ -452,17 +469,40 @@ const Admin = () => {
                     <option value="Industrial">Industrial</option>
                   </select>
                 </div>
-                <Input
-                  placeholder="Image URL"
-                  value={newGalleryItem.image}
-                  onChange={(e) =>
-                    setNewGalleryItem({
-                      ...newGalleryItem,
-                      image: e.target.value,
-                    })
-                  }
-                  className="bg-charcoal-700 border-charcoal-600 text-white"
-                />
+                
+                {/* Image Upload */}
+                <div className="space-y-2">
+                  <label className="text-white block text-sm font-medium">Upload Image</label>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleGalleryImageUpload}
+                      className="hidden"
+                      id="gallery-image-upload"
+                    />
+                    <label
+                      htmlFor="gallery-image-upload"
+                      className="flex items-center space-x-2 bg-charcoal-700 border border-charcoal-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-charcoal-600 transition-colors"
+                    >
+                      <Upload size={16} />
+                      <span>Choose Image</span>
+                    </label>
+                    {galleryImageFile && (
+                      <span className="text-gold-400 text-sm">{galleryImageFile.name}</span>
+                    )}
+                  </div>
+                  {newGalleryItem.image && (
+                    <div className="mt-2">
+                      <img
+                        src={newGalleryItem.image}
+                        alt="Preview"
+                        className="w-32 h-24 object-cover rounded-md border border-charcoal-600"
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <Textarea
                   placeholder="Description"
                   value={newGalleryItem.description}
@@ -583,18 +623,41 @@ const Admin = () => {
                     }
                     className="bg-charcoal-700 border-charcoal-600 text-white"
                   />
-                  <Input
-                    placeholder="Image URL"
-                    value={newInteriorStyle.image}
-                    onChange={(e) =>
-                      setNewInteriorStyle({
-                        ...newInteriorStyle,
-                        image: e.target.value,
-                      })
-                    }
-                    className="bg-charcoal-700 border-charcoal-600 text-white"
-                  />
                 </div>
+
+                {/* Image Upload for Interior Styles */}
+                <div className="space-y-2">
+                  <label className="text-white block text-sm font-medium">Upload Image</label>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleStyleImageUpload}
+                      className="hidden"
+                      id="style-image-upload"
+                    />
+                    <label
+                      htmlFor="style-image-upload"
+                      className="flex items-center space-x-2 bg-charcoal-700 border border-charcoal-600 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-charcoal-600 transition-colors"
+                    >
+                      <Upload size={16} />
+                      <span>Choose Image</span>
+                    </label>
+                    {styleImageFile && (
+                      <span className="text-gold-400 text-sm">{styleImageFile.name}</span>
+                    )}
+                  </div>
+                  {newInteriorStyle.image && (
+                    <div className="mt-2">
+                      <img
+                        src={newInteriorStyle.image}
+                        alt="Preview"
+                        className="w-32 h-24 object-cover rounded-md border border-charcoal-600"
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <Textarea
                   placeholder="Description"
                   value={newInteriorStyle.description}
@@ -721,109 +784,56 @@ const Admin = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-charcoal-600">
-                      <TableHead className="text-gray-300">Name</TableHead>
-                      <TableHead className="text-gray-300">Email</TableHead>
-                      <TableHead className="text-gray-300">Phone</TableHead>
-                      <TableHead className="text-gray-300">Type</TableHead>
-                      <TableHead className="text-gray-300">Date</TableHead>
-                      <TableHead className="text-gray-300">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {customerMessages.map((message) => (
-                      <TableRow
-                        key={message.id}
-                        className="border-charcoal-600"
-                      >
-                        <TableCell className="text-white">
+                <div className="space-y-4">
+                  {customerMessages.map((message) => (
+                    <div
+                      key={message.id}
+                      className="bg-charcoal-700 p-4 rounded-lg relative"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-white font-semibold">
                           {message.name}
-                        </TableCell>
-                        <TableCell className="text-gray-300">
-                          {message.email}
-                        </TableCell>
-                        <TableCell className="text-gray-300">
-                          {message.phone || "N/A"}
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded text-xs ${
-                              message.type === "quote"
-                                ? "bg-gold-400 text-charcoal-900"
-                                : "bg-blue-400 text-white"
-                            }`}
-                          >
-                            {message.type}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-gray-300">
-                          {message.date}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-charcoal-600 text-white"
-                            >
-                              View
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleDeleteMessage(message.id)}
-                            >
-                              <Trash2 size={14} />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-
-            {/* Message Details */}
-            {customerMessages.length > 0 && (
-              <Card className="bg-charcoal-800 border-charcoal-700">
-                <CardHeader>
-                  <CardTitle className="text-white">Message Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {customerMessages.map((message) => (
-                      <div
-                        key={message.id}
-                        className="bg-charcoal-700 p-4 rounded-lg"
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="text-white font-semibold">
-                            {message.name}
-                          </h4>
+                        </h4>
+                        <div className="flex items-center space-x-2">
                           <span className="text-gray-400 text-sm">
                             {message.date}
                           </span>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDeleteMessage(message.id)}
+                          >
+                            <Trash2 size={14} />
+                          </Button>
                         </div>
-                        <p className="text-gray-300 mb-2">
-                          <strong>Email:</strong> {message.email}
-                        </p>
-                        {message.phone && (
-                          <p className="text-gray-300 mb-2">
-                            <strong>Phone:</strong> {message.phone}
-                          </p>
-                        )}
-                        <p className="text-gray-300">
-                          <strong>Message:</strong> {message.message}
-                        </p>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+                      <div className="flex justify-between items-center mb-2">
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${
+                            message.type === "quote"
+                              ? "bg-gold-400 text-charcoal-900"
+                              : "bg-blue-400 text-white"
+                          }`}
+                        >
+                          {message.type}
+                        </span>
+                      </div>
+                      <p className="text-gray-300 mb-2">
+                        <strong>Email:</strong> {message.email}
+                      </p>
+                      {message.phone && (
+                        <p className="text-gray-300 mb-2">
+                          <strong>Phone:</strong> {message.phone}
+                        </p>
+                      )}
+                      <p className="text-gray-300">
+                        <strong>Message:</strong> {message.message}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>
