@@ -42,7 +42,7 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-charcoal-800 rounded-2xl p-8 shadow-2xl">
+            <div className="bg-charcoal-800 rounded-2xl p-8 md:p-6 shadow-xl">
               <h2 className="text-2xl font-bold text-white mb-6">{t('contact.sendMessage')}</h2>
               
               {isSubmitted ? (
@@ -156,7 +156,10 @@ const Contact = () => {
               <div className="bg-charcoal-800 rounded-2xl p-8 shadow-2xl">
                 <h3 className="text-white font-semibold mb-4">{t('contact.ourLocation')}</h3>
                 <div className="w-full h-64 bg-charcoal-700 rounded-lg flex items-center justify-center">
-                  <p className="text-gray-400">Google Maps Integration</p>
+                  <iframe className="w-full h-full border-0"
+ src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57068.64761270479!2d87.94697988980417!3d26.623161965897143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e5baf5bbac5971%3A0xf4e38a45f65be2e7!2sBirtamod!5e0!3m2!1sen!2snp!4v1751873682299!5m2!1sen!2snp"
+                    loading="lazy" ></iframe>
+                  {/* <p className="text-gray-400">Google Maps Integration</p> */}
                 </div>
               </div>
             </div>

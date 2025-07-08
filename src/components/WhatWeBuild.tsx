@@ -127,11 +127,11 @@ const WhatWeBuild = () => {
         </div>
 
         {/* CTA Section */}
-        <div className={`text-center mt-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1.4s' }}>
+        {/* <div className={`text-center mt-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '1.4s' }}>
           <button className="bg-gold-gradient text-charcoal-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:bg-gold-gradient-hover hover:shadow-2xl hover:transform hover:scale-105">
             {t('whatWeBuild.exploreProjects')}
           </button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

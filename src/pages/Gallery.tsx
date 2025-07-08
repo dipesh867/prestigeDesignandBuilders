@@ -94,6 +94,7 @@ const Gallery = () => {
               >
                 <div className="relative overflow-hidden">
                   <img
+                    decoding='async'
                     loading='lazy'
                     src={project.image}
                     alt={project.title}
@@ -141,6 +142,8 @@ const Gallery = () => {
                 </button>
 
                 <img
+                  loading='lazy'
+                  decoding='async'
                   src={filteredProjects[selectedImage].image}
                   alt={filteredProjects[selectedImage].title}
                   className="w-full h-auto rounded-lg"
