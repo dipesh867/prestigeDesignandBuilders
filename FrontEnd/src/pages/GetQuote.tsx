@@ -142,12 +142,12 @@ const GetQuote = () => {
                     className="w-full h-10 px-3 py-2 bg-charcoal-700 border border-charcoal-600 text-white rounded-md"
                   >
                     <option value="">{t('getQuote.selectBudgetRange')}</option>
-                    <option value="under-50k">Under $50,000</option>
-                    <option value="50k-100k">$50,000 - $100,000</option>
-                    <option value="100k-250k">$100,000 - $250,000</option>
-                    <option value="250k-500k">$250,000 - $500,000</option>
-                    <option value="500k-1m">$500,000 - $1M</option>
-                    <option value="over-1m">Over $1M</option>
+                    <option value="under-50k">Under Rs.50,000</option>
+                    <option value="50k-100k">Rs.50,000 - Rs.100,000</option>
+                    <option value="100k-250k">Rs.100,000 - Rs.250,000</option>
+                    <option value="250k-500k">Rs.250,000 - Rs.500,000</option>
+                    <option value="500k-1m">Rs.500,000 - Rs.10,000,000</option>
+                    <option value="over-1m">Over Rs.10,000,000</option>
                   </select>
                 </div>
                 <div>

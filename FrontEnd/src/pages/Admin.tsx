@@ -148,7 +148,7 @@ const Admin = () => {
           description: "Clean lines and open spaces",
           image:
             "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800",
-          budget: "$75,000 - $150,000",
+          budget: "Rs.75,000 - Rs.150,000",
           timeline: "8-12 weeks",
           features: ["Open floor plans", "Neutral colors", "Natural materials"],
         },
@@ -590,7 +590,7 @@ const Admin = () => {
                     className="bg-charcoal-700 border-charcoal-600 text-white"
                   />
                   <Input
-                    placeholder="Budget Range (e.g., $50,000 - $100,000)"
+                    placeholder="Budget Range (e.g., Rs.50,000 - Rs.100,000)"
                     value={newInteriorStyle.budget}
                     onChange={(e) =>
                       setNewInteriorStyle({
