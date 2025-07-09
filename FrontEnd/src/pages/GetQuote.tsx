@@ -167,7 +167,7 @@ const GetQuote = () => {
               </div>
 
               <div>
-                <Label htmlFor="file-upload" className="text-white">{t('getQuote.fileUpload')}</Label>
+                <Label htmlFor="file-upload" className="text-white ">{t('getQuote.fileUpload')}</Label>
                 <div className="mt-2 flex justify-center">
                   <div className="w-full">
                     <Input
