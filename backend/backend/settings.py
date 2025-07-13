@@ -139,7 +139,7 @@ REST_FRAMEWORK = {
 
 #only for development
 CORS_ALLOW_ALL_ORIGINS = True
-
+ALLOWED_HOSTS=['*']
 #for deployment
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:3000",  # React dev server

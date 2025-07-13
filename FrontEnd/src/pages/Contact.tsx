@@ -15,15 +15,54 @@ const Contact = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    toast({
-      title: t('contact.messageSent'),
-      description: t('contact.getBackSoon'),
-    });
-    setTimeout(() => setIsSubmitted(false), 3000);
+
+  const target = e.currentTarget;
+
+  const formData = {
+    name: (target.elements.namedItem("contact-name") as HTMLInputElement).value,
+    email: (target.elements.namedItem("contact-email") as HTMLInputElement).value,
+    subject: "Contact Form Submission",
+    message: (target.elements.namedItem("contact-message") as HTMLTextAreaElement).value,
   };
+
+  try {
+    const response = await fetch("http://localhost:8000/api/contact/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      // Show toast and animation
+      setIsSubmitted(true);
+      toast({
+        title: t('contact.messageSent'),
+        description: t('contact.getBackSoon'),
+      });
+
+      target.reset(); // Clear the form
+
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } else {
+      toast({
+        title: t('contact.sendFailed'),
+        description: t('contact.tryAgain'),
+        variant: 'destructive',
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast({
+      title: t('contact.errorOccurred'),
+      description: t('contact.tryAgain'),
+      variant: 'destructive',
+    });
+  }
+};
 
   return (
     <div className="overflow-x-hidden bg-charcoal-900">

@@ -11,6 +11,7 @@ import {
   Plus,
   X,
   Home,
+  FileText,
 } from "lucide-react";
 import {
   Card,
@@ -52,10 +53,24 @@ interface CustomerMessage {
   type: "contact" | "quote";
 }
 
+interface QuoteRequest {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  projectType: string;
+  budget: string;
+  timeline: string;
+  location: string;
+  description: string;
+  images: string[];
+  date: string;
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<"gallery" | "styles" | "messages">(
+  const [activeTab, setActiveTab] = useState<"gallery" | "styles" | "messages" | "quotes">(
     "gallery"
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -91,6 +106,9 @@ const Admin = () => {
   const [customerMessages, setCustomerMessages] = useState<CustomerMessage[]>(
     []
   );
+
+  // Quote requests state
+  const [quoteRequests, setQuoteRequests] = useState<QuoteRequest[]>([]);
 
   // Fixed keyboard shortcut handler
   useEffect(() => {
@@ -172,6 +190,41 @@ const Admin = () => {
           message: "Need a quote for commercial building project.",
           date: "2024-01-14",
           type: "quote",
+        },
+      ]);
+
+      // Mock quote requests
+      setQuoteRequests([
+        {
+          id: "1",
+          name: "Alice Johnson",
+          email: "alice@example.com",
+          phone: "+1-555-0456",
+          projectType: "Residential Construction",
+          budget: "Rs.15,00,000 - Rs.25,00,000",
+          timeline: "3-6 months",
+          location: "Mumbai, Maharashtra",
+          description: "Looking to build a modern 3BHK house with steel frame construction. Need earthquake-resistant design.",
+          images: [
+            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400",
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400"
+          ],
+          date: "2024-01-16",
+        },
+        {
+          id: "2",
+          name: "Robert Kumar",
+          email: "robert@example.com",
+          phone: "+1-555-0789",
+          projectType: "Commercial Construction",
+          budget: "Rs.50,00,000 - Rs.1,00,00,000",
+          timeline: "6-12 months",
+          location: "Delhi, India",
+          description: "Commercial warehouse construction with steel structure. Need fire-resistant materials and proper ventilation system.",
+          images: [
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400"
+          ],
+          date: "2024-01-15",
         },
       ]);
     }
@@ -324,6 +377,15 @@ const Admin = () => {
     });
   };
 
+  const handleDeleteQuoteRequest = (id: string) => {
+    setQuoteRequests(quoteRequests.filter((quote) => quote.id !== id));
+    toast({
+      title: "Quote Request Deleted",
+      description: "Quote request has been deleted.",
+      duration: 3000,
+    });
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-charcoal-900 flex items-center justify-center px-4">
@@ -401,6 +463,11 @@ const Admin = () => {
               key: "messages",
               label: "Customer Messages",
               icon: MessageSquare,
+            },
+            {
+              key: "quotes",
+              label: "Quote Requests",
+              icon: FileText,
             },
           ].map(({ key, label, icon: Icon }) => (
             <button
@@ -770,7 +837,7 @@ const Admin = () => {
               <CardHeader>
                 <CardTitle className="text-white">Customer Messages</CardTitle>
                 <CardDescription className="text-gray-400">
-                  Messages and inquiries from customers
+                  Messages and inquiries from customers via Contact page
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -819,6 +886,101 @@ const Admin = () => {
                       <p className="text-gray-300">
                         <strong>Message:</strong> {message.message}
                       </p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {activeTab === "quotes" && (
+          <div className="space-y-6 animate-fade-in">
+            <Card className="bg-charcoal-800 border-charcoal-700">
+              <CardHeader>
+                <CardTitle className="text-white">Quote Requests</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Detailed quote requests from customers via Get Quote page
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {quoteRequests.map((quote) => (
+                    <div
+                      key={quote.id}
+                      className="bg-charcoal-700 p-6 rounded-lg relative"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <h4 className="text-white font-semibold text-lg">
+                          {quote.name}
+                        </h4>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-gray-400 text-sm">
+                            {quote.date}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDeleteQuoteRequest(quote.id)}
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Email:</strong> {quote.email}
+                          </p>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Phone:</strong> {quote.phone}
+                          </p>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Location:</strong> {quote.location}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Project Type:</strong> {quote.projectType}
+                          </p>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Budget:</strong> <span className="text-gold-400 font-medium">{quote.budget}</span>
+                          </p>
+                          <p className="text-gray-300 mb-2">
+                            <strong>Timeline:</strong> {quote.timeline}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mb-4">
+                        <p className="text-gray-300">
+                          <strong>Project Description:</strong>
+                        </p>
+                        <p className="text-gray-400 mt-1 bg-charcoal-800 p-3 rounded">
+                          {quote.description}
+                        </p>
+                      </div>
+
+                      {quote.images && quote.images.length > 0 && (
+                        <div>
+                          <p className="text-gray-300 mb-3">
+                            <strong>Uploaded Images:</strong>
+                          </p>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {quote.images.map((image, index) => (
+                              <div key={index} className="relative">
+                                <img
+                                  src={image}
+                                  alt={`Project image ${index + 1}`}
+                                  className="w-full h-24 object-cover rounded-md border border-charcoal-600 hover:scale-105 transition-transform cursor-pointer"
+                                  onClick={() => window.open(image, '_blank')}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
