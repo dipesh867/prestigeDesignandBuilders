@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { apiService, CustomerMessages } from "@/services/api";
 import {
   Upload,
   Image,
@@ -41,16 +42,6 @@ interface InteriorStyle {
   budget: string;
   timeline: string;
   features: string[];
-}
-
-interface CustomerMessage {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  message: string;
-  date: string;
-  type: "contact" | "quote";
 }
 
 interface QuoteRequest {
@@ -103,7 +94,7 @@ const Admin = () => {
   const [styleImageFile, setStyleImageFile] = useState<File | null>(null);
 
   // Messages state
-  const [customerMessages, setCustomerMessages] = useState<CustomerMessage[]>(
+  const [customerMessages, setCustomerMessages] = useState<CustomerMessages[]>(
     []
   );
 
@@ -171,28 +162,6 @@ const Admin = () => {
           features: ["Open floor plans", "Neutral colors", "Natural materials"],
         },
       ]);
-
-      // Mock customer messages
-      setCustomerMessages([
-        {
-          id: "1",
-          name: "John Doe",
-          email: "john@example.com",
-          phone: "+1-555-0123",
-          message: "Interested in steel construction for my new home.",
-          date: "2024-01-15",
-          type: "contact",
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          email: "jane@example.com",
-          message: "Need a quote for commercial building project.",
-          date: "2024-01-14",
-          type: "quote",
-        },
-      ]);
-
       // Mock quote requests
       setQuoteRequests([
         {
@@ -229,6 +198,44 @@ const Admin = () => {
       ]);
     }
   }, [isAuthenticated]);
+
+  
+  useEffect(() => {
+    async function fetchMessages() {
+      const response = await apiService.getCustomerMessages();
+      if (response.error) {
+        console.error("Error fetching messages:", response.error);
+      } else if (response.data) {
+        setCustomerMessages(response.data);
+      }
+    }
+    fetchMessages();
+  }, []);
+
+const handleDeleteMessage = async (id: string) => {
+  const response = await apiService.deleteCustomerMessage(id);
+
+  if (response.error) {
+    toast({
+      title: "Error",
+      description: response.error,
+      variant: "destructive",
+      duration: 3000,
+    });
+  } else {
+    // Remove message from state to update UI immediately
+    setCustomerMessages((prevMessages) =>
+      prevMessages.filter((msg) => msg.id !== id)
+    );
+
+    toast({
+      title: "Deleted",
+      description: "Message deleted successfully",
+      duration: 2000,
+    });
+  }
+};
+  
 
   const handleLogin = () => {
     if (password === "admin123") {
@@ -368,14 +375,14 @@ const Admin = () => {
     });
   };
 
-  const handleDeleteMessage = (id: string) => {
-    setCustomerMessages(customerMessages.filter((msg) => msg.id !== id));
-    toast({
-      title: "Message Deleted",
-      description: "Customer message has been deleted.",
-      duration: 3000,
-    });
-  };
+  // const handleDeleteMessage = (id: string) => {
+  //   setCustomerMessages(customerMessages.filter((msg) => msg.id !== id));
+  //   toast({
+  //     title: "Message Deleted",
+  //     description: "Customer message has been deleted.",
+  //     duration: 3000,
+  //   });
+  // };
 
   const handleDeleteQuoteRequest = (id: string) => {
     setQuoteRequests(quoteRequests.filter((quote) => quote.id !== id));
@@ -853,7 +860,7 @@ const Admin = () => {
                         </h4>
                         <div className="flex items-center space-x-2">
                           <span className="text-gray-400 text-sm">
-                            {message.date}
+                            {message.date.split("T")[0]}
                           </span>
                           <Button
                             size="sm"
@@ -867,7 +874,7 @@ const Admin = () => {
                       <div className="flex justify-between items-center mb-2">
                         <span
                           className={`px-2 py-1 rounded text-xs ${
-                            message.type === "quote"
+                            message.type === "contact"
                               ? "bg-gold-400 text-charcoal-900"
                               : "bg-blue-400 text-white"
                           }`}

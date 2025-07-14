@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse
-from rest_framework import generics
-from .models import Messgaes
+from rest_framework import generics, permissions
+from .models import Messages
 from .serializers import MessagesSerializer
 
 # Create your views here.
@@ -9,5 +9,17 @@ def home(request):
 
 
 class messageCreateView(generics.CreateAPIView):
-    queryset = Messgaes.objects.all()
+    queryset = Messages.objects.all()
     serializer_class = MessagesSerializer
+
+class messageListView(generics.ListAPIView):
+    queryset=Messages.objects.all().order_by('-id')
+    serializer_class=MessagesSerializer
+
+class messageDeleteView(generics.DestroyAPIView):
+    queryset = Messages.objects.all()
+    serializer_class = MessagesSerializer
+    lookup_field = "pk"
+    permission_classes = []  # ← this disables any login requirement
+    authentication_classes = []   
+

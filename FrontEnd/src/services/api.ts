@@ -25,8 +25,18 @@ export interface QuoteFormData {
   files?: File[];
 }
 
+export interface CustomerMessages {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  date: string;
+  type: "contact";
+}
+
 // Future: Replace with actual API endpoints
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL ='http://localhost:8000/api';
 
 export const apiService = {
   // Contact form submission
@@ -88,5 +98,38 @@ export const apiService = {
         error: 'Failed to subscribe to newsletter'
       };
     }
+  },
+
+  getCustomerMessages: async (): Promise<ApiResponse<CustomerMessages[]>> => {
+    try {
+      // Replace with actual API call
+      const response = await fetch(`${API_BASE_URL}/contact/list/`);
+      const data = await response.json();
+      return { data };
+    } catch (error) {
+      return {
+        error: 'Failed to fetch messages'
+      };
+    }
+  },
+
+  deleteCustomerMessage: async (id: string): Promise<ApiResponse<void>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/contact/${id}/`, {  // Note trailing slash
+        method: 'DELETE',
+        credentials: 'omit',  // explicitly do not send cookies
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Delete failed with status ${response.status}`);
+      }
+      return { message: 'Message deleted successfully' };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to delete message' };
+    }
   }
 };
+
