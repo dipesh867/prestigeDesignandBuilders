@@ -7,24 +7,69 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { QuoteFormData } from '@/services/api';
 
 const GetQuote = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    toast({
-      title: "Quote Request Submitted!",
-      description: "We'll get back to you within 24 hours.",
-    });
+    const target = e.currentTarget;
+
+    const formData = new FormData();
+    formData.append("name", (target.elements.namedItem("name") as HTMLInputElement).value);
+    formData.append("email", (target.elements.namedItem("email") as HTMLInputElement).value);
+    formData.append("phone", (target.elements.namedItem("phone") as HTMLInputElement).value);
+    formData.append("projectType", (target.elements.namedItem("projectType") as HTMLSelectElement).value);
+    formData.append("location", (target.elements.namedItem("location") as HTMLInputElement).value);
+    formData.append("budget", (target.elements.namedItem("budget") as HTMLSelectElement).value);
+    formData.append("timeline", (target.elements.namedItem("timeline") as HTMLSelectElement).value);
+    formData.append("message", (target.elements.namedItem("message") as HTMLTextAreaElement).value);
+
+    // Append files
+    const files = (target.elements.namedItem("file-upload") as HTMLInputElement)?.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+      }
+    }
+
+    try {
+      const response = await fetch("http://localhost:8000/api/quotes/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        toast({
+          title: 'Your Quote Request has been submitted successfully',
+          description: 'We will get back to you soon with a detailed quote.'
+        });
+        target.reset();
+        setTimeout(() => setIsSubmitted(false), 3000);
+      } else {
+        toast({
+          title: t('contact.sendFailed'),
+          description: t('contact.tryAgain'),
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: t('contact.errorOccurred'),
+        description: t('contact.tryAgain'),
+        variant: 'destructive',
+      });
+    }
   };
 
   const openWhatsApp = () => {
     const message = "Hi! I'd like to get a quick quote for my project.";
-    const phoneNumber = "1234567890"; // Replace with actual WhatsApp number
+    const phoneNumber = "1234567890"; // Replace with your real number
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -81,7 +126,7 @@ const GetQuote = () => {
                 <div>
                   <Label htmlFor="name" className="text-white">{t('getQuote.fullName')} *</Label>
                   <Input
-                    id="name"
+                    id="name" 
                     type="text"
                     required
                     className="bg-charcoal-700 border-charcoal-600 text-white"
@@ -109,9 +154,9 @@ const GetQuote = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="project-type" className="text-white">{t('getQuote.projectType')} *</Label>
+                  <Label htmlFor="projectType" className="text-white">{t('getQuote.projectType')} *</Label>
                   <select
-                    id="project-type"
+                    id="projectType"
                     required
                     className="w-full h-10 px-3 py-2 bg-charcoal-700 border border-charcoal-600 text-white rounded-md"
                   >

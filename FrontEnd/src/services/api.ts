@@ -22,7 +22,7 @@ export interface QuoteFormData {
   budget?: string;
   timeline?: string;
   message: string;
-  files?: File[];
+  images?: File[];
 }
 
 export interface CustomerMessages {
