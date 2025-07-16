@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { apiService, CustomerMessages } from "@/services/api";
+import { apiService, CustomerMessages, QuoteFormData, GalleryItem, InteriorStyle } from "@/services/api";
 import {
   Upload,
   Image,
@@ -26,24 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-interface GalleryItem {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  category: string;
-}
-
-interface InteriorStyle {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  budget: string;
-  timeline: string;
-  features: string[];
-}
-
 interface QuoteRequest {
   id: string;
   name: string;
@@ -57,6 +39,8 @@ interface QuoteRequest {
   images: string[];
   date: string;
 }
+
+// Remove local QuoteFormData type to use the imported one from apiService
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -99,7 +83,7 @@ const Admin = () => {
   );
 
   // Quote requests state
-  const [quoteRequests, setQuoteRequests] = useState<QuoteRequest[]>([]);
+const [quoteRequests, setQuoteRequests] = useState<QuoteFormData[]>([]);
 
   // Fixed keyboard shortcut handler
   useEffect(() => {
@@ -126,85 +110,36 @@ const Admin = () => {
     };
   }, [navigate, isAuthenticated]);
 
-  // Load mock data
+  // Fetch gallery and interior styles from API on login
   useEffect(() => {
     if (isAuthenticated) {
-      // Mock gallery data
-      setGalleryItems([
-        {
-          id: "1",
-          title: "Modern Villa",
-          description: "Luxurious modern villa with steel construction",
-          image:
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800",
-          category: "Residential",
-        },
-        {
-          id: "2",
-          title: "Commercial Complex",
-          description: "State-of-the-art commercial building",
-          image:
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
-          category: "Commercial",
-        },
-      ]);
-
-      // Mock interior styles data
-      setInteriorStyles([
-        {
-          id: "1",
-          name: "Modern Minimalist",
-          description: "Clean lines and open spaces",
-          image:
-            "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=800",
-          budget: "Rs.75,000 - Rs.150,000",
-          timeline: "8-12 weeks",
-          features: ["Open floor plans", "Neutral colors", "Natural materials"],
-        },
-      ]);
-      // Mock quote requests
-      setQuoteRequests([
-        {
-          id: "1",
-          name: "Alice Johnson",
-          email: "alice@example.com",
-          phone: "+1-555-0456",
-          projectType: "Residential Construction",
-          budget: "Rs.15,00,000 - Rs.25,00,000",
-          timeline: "3-6 months",
-          location: "Mumbai, Maharashtra",
-          description: "Looking to build a modern 3BHK house with steel frame construction. Need earthquake-resistant design.",
-          images: [
-            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400",
-            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400"
-          ],
-          date: "2024-01-16",
-        },
-        {
-          id: "2",
-          name: "Robert Kumar",
-          email: "robert@example.com",
-          phone: "+1-555-0789",
-          projectType: "Commercial Construction",
-          budget: "Rs.50,00,000 - Rs.1,00,00,000",
-          timeline: "6-12 months",
-          location: "Delhi, India",
-          description: "Commercial warehouse construction with steel structure. Need fire-resistant materials and proper ventilation system.",
-          images: [
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400"
-          ],
-          date: "2024-01-15",
-        },
-      ]);
+      apiService.getGallery().then((response) => {
+        if (response.data) setGalleryItems(response.data);
+      });
+      apiService.getInteriorStyles().then((response) => {
+        if (response.data) setInteriorStyles(response.data);
+      });
     }
   }, [isAuthenticated]);
 
-  
+useEffect(() => {
+  async function fetchQuotes() {
+    const response = await apiService.getCustomerQuotes();
+    if (response.error) {
+      console.error("Error fetching quotes:", response.error);
+    } else if (response.data) {
+      setQuoteRequests(response.data);
+    }
+  }
+  fetchQuotes();
+}, []);
+    
+
   useEffect(() => {
     async function fetchMessages() {
       const response = await apiService.getCustomerMessages();
       if (response.error) {
-        console.error("Error fetching messages:", response.error);
+        console.error("Error fetching Quotes:", response.error);
       } else if (response.data) {
         setCustomerMessages(response.data);
       }
@@ -291,8 +226,8 @@ const handleDeleteMessage = async (id: string) => {
     }
   };
 
-  const handleAddGalleryItem = () => {
-    if (!newGalleryItem.title || !newGalleryItem.image) {
+  const handleAddGalleryItem = async () => {
+    if (!newGalleryItem.title || !galleryImageFile) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields and upload an image.",
@@ -301,78 +236,105 @@ const handleDeleteMessage = async (id: string) => {
       });
       return;
     }
-
-    const newItem: GalleryItem = {
-      id: Date.now().toString(),
-      ...newGalleryItem,
-    };
-
-    setGalleryItems([...galleryItems, newItem]);
-    setNewGalleryItem({
-      title: "",
-      description: "",
-      image: "",
-      category: "Residential",
-    });
-    setGalleryImageFile(null);
-
-    toast({
-      title: "Gallery Item Added",
-      description: "New gallery item has been added successfully.",
-      duration: 2000,
-    });
+    const formData = new FormData();
+    formData.append("title", newGalleryItem.title);
+    formData.append("description", newGalleryItem.description);
+    formData.append("type", newGalleryItem.category);
+    formData.append("image", galleryImageFile);
+    const response = await apiService.createGalleryItem(formData);
+    if (response.data) {
+      setGalleryItems((prev) => [response.data!, ...prev]);
+      setNewGalleryItem({
+        title: "",
+        description: "",
+        image: "",
+        category: "Residential",
+      });
+      setGalleryImageFile(null);
+      toast({
+        title: "Gallery Item Added",
+        description: "New gallery item has been added successfully.",
+        duration: 2000,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: response.error || "Failed to add gallery item.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleAddInteriorStyle = () => {
-    if (!newInteriorStyle.name || !newInteriorStyle.image) {
+  const handleAddInteriorStyle = async () => {
+    if (!newInteriorStyle.name) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields and upload an image.",
+        description: "Please fill in all required fields.",
         variant: "destructive",
         duration: 3000,
       });
       return;
     }
-
-    const newStyle: InteriorStyle = {
-      id: Date.now().toString(),
-      ...newInteriorStyle,
-      features: newInteriorStyle.features.filter((f) => f.trim() !== ""),
-    };
-
-    setInteriorStyles([...interiorStyles, newStyle]);
-    setNewInteriorStyle({
-      name: "",
-      description: "",
-      image: "",
-      budget: "",
-      timeline: "",
-      features: [""],
-    });
-    setStyleImageFile(null);
-
-    toast({
-      title: "Interior Style Added",
-      description: "New interior style has been added successfully.",
-    });
+    // Only send the name for now (API only supports interior_name)
+    const response = await apiService.createInteriorStyle({ interior_name: newInteriorStyle.name });
+    if (response.data) {
+      setInteriorStyles((prev) => [response.data!, ...prev]);
+      setNewInteriorStyle({
+        name: "",
+        description: "",
+        image: "",
+        budget: "",
+        timeline: "",
+        features: [""],
+      });
+      setStyleImageFile(null);
+      toast({
+        title: "Interior Style Added",
+        description: "New interior style has been added successfully.",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: response.error || "Failed to add interior style.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDeleteGalleryItem = (id: string) => {
-    setGalleryItems(galleryItems.filter((item) => item.id !== id));
-    toast({
-      title: "Item Deleted",
-      description: "Gallery item has been deleted.",
-      duration: 3000,
-    });
+  const handleDeleteGalleryItem = async (id: string | number) => {
+    const response = await apiService.deleteGalleryItem(id);
+    if (!response.error) {
+      setGalleryItems((prev) => prev.filter((item) => item.id !== id));
+      toast({
+        title: "Item Deleted",
+        description: "Gallery item has been deleted.",
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDeleteInteriorStyle = (id: string) => {
-    setInteriorStyles(interiorStyles.filter((style) => style.id !== id));
-    toast({
-      title: "Style Deleted",
-      description: "Interior style has been deleted.",
-      duration: 3000,
-    });
+  const handleDeleteInteriorStyle = async (id: string | number) => {
+    const response = await apiService.deleteInteriorStyle(id);
+    if (!response.error) {
+      setInteriorStyles((prev) => prev.filter((style) => style.id !== id));
+      toast({
+        title: "Style Deleted",
+        description: "Interior style has been deleted.",
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+      });
+    }
   };
 
   // const handleDeleteMessage = (id: string) => {
@@ -384,13 +346,23 @@ const handleDeleteMessage = async (id: string) => {
   //   });
   // };
 
-  const handleDeleteQuoteRequest = (id: string) => {
-    setQuoteRequests(quoteRequests.filter((quote) => quote.id !== id));
-    toast({
-      title: "Quote Request Deleted",
-      description: "Quote request has been deleted.",
-      duration: 3000,
-    });
+  const handleDeleteQuoteRequest = async (id: string) => {
+    const response = await apiService.deleteCustomerQuote(id);
+    if (response.error) {
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+        duration: 3000,
+      });
+    } else {
+      setQuoteRequests(quoteRequests.filter((quote) => String(quote.id) !== id));
+      toast({
+        title: "Quote Request Deleted",
+        description: "Quote request has been deleted.",
+        duration: 3000,
+      });
+    }
   };
 
   if (!isAuthenticated) {
@@ -613,7 +585,7 @@ const handleDeleteMessage = async (id: string) => {
                           {item.description}
                         </p>
                         <span className="inline-block bg-gold-400 text-charcoal-900 px-2 py-1 rounded text-xs mb-3">
-                          {item.category}
+                          {item.type}
                         </span>
                         <div className="flex space-x-2">
                           <Button
@@ -794,13 +766,13 @@ const handleDeleteMessage = async (id: string) => {
                       className="bg-charcoal-700 rounded-lg overflow-hidden"
                     >
                       <img
-                        src={style.image}
-                        alt={style.name}
+                        src={style.description}
+                        alt={style.interior_name}
                         className="w-full h-48 object-cover"
                       />
                       <div className="p-4">
                         <h3 className="text-white font-semibold mb-2">
-                          {style.name}
+                          {style.interior_name}
                         </h3>
                         <p className="text-gray-400 text-sm mb-2">
                           {style.description}
@@ -928,7 +900,7 @@ const handleDeleteMessage = async (id: string) => {
                           <Button
                             size="sm"
                             variant="destructive"
-                            onClick={() => handleDeleteQuoteRequest(quote.id)}
+                            onClick={() => handleDeleteQuoteRequest(String(quote.id))}
                           >
                             <Trash2 size={14} />
                           </Button>
@@ -965,7 +937,7 @@ const handleDeleteMessage = async (id: string) => {
                           <strong>Project Description:</strong>
                         </p>
                         <p className="text-gray-400 mt-1 bg-charcoal-800 p-3 rounded">
-                          {quote.description}
+                          {quote.message}
                         </p>
                       </div>
 
@@ -975,16 +947,19 @@ const handleDeleteMessage = async (id: string) => {
                             <strong>Uploaded Images:</strong>
                           </p>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {quote.images.map((image, index) => (
-                              <div key={index} className="relative">
-                                <img
-                                  src={image}
-                                  alt={`Project image ${index + 1}`}
-                                  className="w-full h-24 object-cover rounded-md border border-charcoal-600 hover:scale-105 transition-transform cursor-pointer"
-                                  onClick={() => window.open(image, '_blank')}
-                                />
-                              </div>
-                            ))}
+                            {quote.images.map((img, index) => {
+                              const imageUrl = typeof img === 'string' ? img : img.image;
+                              return (
+                                <div key={index} className="relative">
+                                  <img
+                                    src={imageUrl}
+                                    alt={`Project image ${index + 1}`}
+                                    className="w-full h-24 object-cover rounded-md border border-charcoal-600 hover:scale-105 transition-transform cursor-pointer"
+                                    onClick={() => window.open(imageUrl, '_blank')}
+                                  />
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       )}

@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { QuoteFormData } from '@/services/api';
+import { QuoteFormData, apiService } from '@/services/api';
 
 const GetQuote = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,12 +37,8 @@ const GetQuote = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/quotes/", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
+      const response = await apiService.submitQuoteForm(formData);
+      if (!response.error) {
         setIsSubmitted(true);
         toast({
           title: 'Your Quote Request has been submitted successfully',

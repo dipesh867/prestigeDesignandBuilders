@@ -14,6 +14,7 @@ export interface ContactFormData {
 }
 
 export interface QuoteFormData {
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -22,7 +23,8 @@ export interface QuoteFormData {
   budget?: string;
   timeline?: string;
   message: string;
-  images?: File[];
+  date: string;
+  images: { id: number; image: string }[];
 }
 
 export interface CustomerMessages {
@@ -33,6 +35,32 @@ export interface CustomerMessages {
   message: string;
   date: string;
   type: "contact";
+}
+
+export interface GalleryItem {
+  id: number;
+  title: string;
+  type: string;
+  image: string;
+  description: string;
+}
+
+export interface Interior {
+  id: number;
+  name: string;
+  description: string;
+  budget: string;
+  timeline: string;
+  images?: { id: number; image: string }[];
+}
+
+export interface InteriorStyle {
+  id: number;
+  interior_name: string;
+  description?: string;
+  budget?: string;
+  timeline?: string;
+  features?: any;
 }
 
 // Future: Replace with actual API endpoints
@@ -60,24 +88,44 @@ export const apiService = {
   },
 
   // Quote form submission
-  submitQuoteForm: async (data: QuoteFormData): Promise<ApiResponse<any>> => {
+  submitQuoteForm: async (data: QuoteFormData | FormData): Promise<ApiResponse<any>> => {
     try {
-      // Future: Replace with actual API call with file upload
-      console.log('Quote form submitted:', data);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      let body: BodyInit;
+      let headers: Record<string, string> = {};
+      if (data instanceof FormData) {
+        body = data as FormData;
+      } else {
+        // Convert QuoteFormData to FormData
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+          if (key === 'images' && Array.isArray(value)) {
+            value.forEach((img: any) => {
+              if (img instanceof File) {
+                formData.append('images', img);
+              }
+            });
+          } else if (value !== undefined && value !== null) {
+            formData.append(key, value as string);
+          }
+        });
+        body = formData;
+      }
+      const response = await fetch(`${API_BASE_URL}/quotes/`, {
+        method: 'POST',
+        body,
+        headers,
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to submit quote: ${response.status}`);
+      }
+      const respData = await response.json();
       return {
-        data: { 
-          id: Date.now(),
-          quoteNumber: `PDB-${Date.now()}`
-        },
-        message: 'Quote request submitted successfully'
+        data: respData,
+        message: 'Quote request submitted successfully',
       };
-    } catch (error) {
+    } catch (error: any) {
       return {
-        error: 'Failed to submit quote request'
+        error: error.message || 'Failed to submit quote request',
       };
     }
   },
@@ -130,6 +178,191 @@ export const apiService = {
     } catch (error: any) {
       return { error: error.message || 'Failed to delete message' };
     }
+  },
+
+getCustomerQuotes: async (): Promise<ApiResponse<QuoteFormData[]>> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/quotes/list/`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    // Assuming your API returns a JSON array of quotes directly:
+    const data: QuoteFormData[] = await response.json();
+    return { data };
+  } catch (error: any) {
+    return {
+      error: error.message || 'Failed to fetch quotes',
+    };
   }
-};
+},
+
+  deleteCustomerQuote: async (id: string | number): Promise<ApiResponse<void>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/quotes/${id}/`, {
+        method: 'DELETE',
+        credentials: 'omit',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Delete failed with status ${response.status}`);
+      }
+      return { message: 'Quote deleted successfully' };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to delete quote' };
+    }
+  },
+
+  // GALLERY
+  getGallery: async (): Promise<ApiResponse<GalleryItem[]>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/gallery/list/`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data: GalleryItem[] = await response.json();
+      return { data };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to fetch gallery' };
+    }
+  },
+  createGalleryItem: async (item: Partial<GalleryItem> | FormData): Promise<ApiResponse<GalleryItem>> => {
+    try {
+      let body: BodyInit;
+      let headers: Record<string, string> = {};
+      if (item instanceof FormData) {
+        body = item;
+      } else {
+        const formData = new FormData();
+        Object.entries(item).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            formData.append(key, value as string);
+          }
+        });
+        body = formData;
+      }
+      const response = await fetch(`${API_BASE_URL}/gallery/`, {
+        method: 'POST',
+        body,
+        headers,
+      });
+      if (!response.ok) throw new Error(`Failed to create gallery item: ${response.status}`);
+      const data: GalleryItem = await response.json();
+      return { data };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to create gallery item' };
+    }
+  },
+  deleteGalleryItem: async (id: string | number): Promise<ApiResponse<void>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/gallery/${id}/`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error(`Delete failed with status ${response.status}`);
+      return { message: 'Gallery item deleted successfully' };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to delete gallery item' };
+    }
+  },
+
+  // INTERIOR
+  getInteriors: async (): Promise<ApiResponse<Interior[]>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/interior/list/`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data: Interior[] = await response.json();
+      return { data };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to fetch interiors' };
+    }
+  },
+  createInterior: async (item: Partial<Interior> | FormData): Promise<ApiResponse<Interior>> => {
+    try {
+      let body: BodyInit;
+      let headers: Record<string, string> = {};
+      if (item instanceof FormData) {
+        body = item;
+      } else {
+        const formData = new FormData();
+        Object.entries(item).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            formData.append(key, value as string);
+          }
+        });
+        body = formData;
+      }
+      const response = await fetch(`${API_BASE_URL}/interior/`, {
+        method: 'POST',
+        body,
+        headers,
+      });
+      if (!response.ok) throw new Error(`Failed to create interior: ${response.status}`);
+      const data: Interior = await response.json();
+      return { data };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to create interior' };
+    }
+  },
+  deleteInterior: async (id: string | number): Promise<ApiResponse<void>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/interior/${id}/`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error(`Delete failed with status ${response.status}`);
+      return { message: 'Interior deleted successfully' };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to delete interior' };
+    }
+  },
+
+  // INTERIOR STYLE
+  getInteriorStyles: async (): Promise<ApiResponse<InteriorStyle[]>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/interior-style/list/`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data: InteriorStyle[] = await response.json();
+      return { data };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to fetch interior styles' };
+    }
+  },
+createInteriorStyle: async (item: Partial<InteriorStyle> & { image?: File }): Promise<ApiResponse<InteriorStyle>> => {
+  try {
+    const formData = new FormData();
+    formData.append("interior_name", item.interior_name || "");
+    formData.append("description", item.description || "");
+    formData.append("budget", item.budget || "");
+    formData.append("timeline", item.timeline || "");
+    if (item.image) formData.append("image", item.image);
+    if (item.features) formData.append("features", JSON.stringify(item.features));
+
+    const response = await fetch(`${API_BASE_URL}/interior-style/`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error(`Failed to create interior style: ${response.status}`);
+    const data: InteriorStyle = await response.json();
+    return { data };
+  } catch (error: any) {
+    return { error: error.message || 'Failed to create interior style' };
+  }
+},
+  deleteInteriorStyle: async (id: string | number): Promise<ApiResponse<void>> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/interior-style/${id}/`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error(`Delete failed with status ${response.status}`);
+      return { message: 'Interior style deleted successfully' };
+    } catch (error: any) {
+      return { error: error.message || 'Failed to delete interior style' };
+    }
+  },
+}
+
+
+
 

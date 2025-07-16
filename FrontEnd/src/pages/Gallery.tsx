@@ -4,7 +4,7 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { projects } from '@/data/projects';
+import { apiService, GalleryItem } from '@/services/api';
 
 const Gallery = () => {
   const { t } = useLanguage();
@@ -33,8 +33,14 @@ const Gallery = () => {
     { key: 'Industrial', label: t('gallery.categories.industrial') },
   ];
 
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  useEffect(() => {
+    apiService.getGallery().then((response) => {
+      if (response.data) setGalleryItems(response.data);
+    });
+  }, []);
   const filteredProjects =
-    activeCategory === 'All' ? projects : projects.filter((p) => p.category === activeCategory);
+    activeCategory === 'All' ? galleryItems : galleryItems.filter((p) => p.type === activeCategory);
 
   const nextImage = () => {
     if (selectedImage !== null) {

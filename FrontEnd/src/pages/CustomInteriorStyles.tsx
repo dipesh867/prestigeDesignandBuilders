@@ -2,13 +2,21 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { apiService, InteriorStyle } from '@/services/api';
 
 const CustomInteriorStyles = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [selectedStyle, setSelectedStyle] = useState<number | null>(null);
+  const [interiorStyles, setInteriorStyles] = useState<InteriorStyle[]>([]);
+
+  useEffect(() => {
+    apiService.getInteriorStyles().then((response) => {
+      if (response.data) setInteriorStyles(response.data);
+    });
+  }, []);
 
   const handleScheduleConsultation = () => {
     navigate('/contact');
@@ -17,69 +25,6 @@ const CustomInteriorStyles = () => {
   const handleViewPortfolio = () => {
     navigate('/gallery');
   };
-
-  const interiorStyles = [
-    {
-      id: 1,
-      name: t('customInterior.modernMinimalist'),
-      description: t('customInterior.modernMinimalistDescription'),
-      image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Open floor plans", "Neutral color palette", "Minimal furniture", "Natural materials"],
-      budget: "Rs.75,000 - Rs.150,000",
-      timeline: "8-12 weeks",
-      detailedDescription: "Modern minimalist design focuses on simplicity, functionality, and clean lines. This style emphasizes the 'less is more' philosophy, creating serene and uncluttered spaces that promote tranquility and focus."
-    },
-    {
-      id: 2,
-      name: t('customInterior.industrialChic'),
-      description: t('customInterior.industrialChicDescription'),
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Exposed brick walls", "Steel and iron elements", "Concrete finishes", "Edison bulb lighting"],
-      budget: "Rs.60,000 - Rs.120,000",
-      timeline: "10-14 weeks",
-      detailedDescription: "Industrial chic combines raw materials with refined touches, creating spaces that feel both edgy and sophisticated. This style celebrates the beauty of unfinished elements and architectural details."
-    },
-    {
-      id: 3,
-      name: t('customInterior.contemporaryLuxury'),
-      description: t('customInterior.contemporaryLuxuryDescription'),
-      image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["High-end finishes", "Smart home technology", "Custom lighting", "Premium textures"],
-      budget: "Rs.150,000 - Rs.300,000",
-      timeline: "12-18 weeks",
-      detailedDescription: "Contemporary luxury design represents the pinnacle of modern living, incorporating the finest materials, cutting-edge technology, and bespoke elements to create truly exceptional spaces."
-    },
-    {
-      id: 4,
-      name: t('customInterior.scandinavianComfort'),
-      description: t('customInterior.scandinavianComfortDescription'),
-      image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Light wood furniture", "Cozy textiles", "Natural lighting", "Functional design"],
-      budget: "Rs.50,000 - Rs.100,000",
-      timeline: "6-10 weeks",
-      detailedDescription: "Scandinavian design emphasizes hygge - the Danish concept of cozy contentment. This style creates warm, inviting spaces that prioritize comfort, functionality, and connection with nature."
-    },
-    {
-      id: 5,
-      name: t('customInterior.rusticModern'),
-      description: t('customInterior.rusticModernDescription'),
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["Reclaimed wood", "Stone accents", "Earth tones", "Mixed textures"],
-      budget: "Rs.80,000 - Rs.160,000",
-      timeline: "10-16 weeks",
-      detailedDescription: "Rustic modern design blends the warmth of traditional country style with contemporary sophistication, creating spaces that feel both timeless and current."
-    },
-    {
-      id: 6,
-      name: t('customInterior.urbanLoft'),
-      description: t('customInterior.urbanLoftDescription'),
-      image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      features: ["High ceilings", "Open layouts", "Urban views", "Flexible spaces"],
-      budget: "Rs.90,000 - Rs.180,000",
-      timeline: "8-14 weeks",
-      detailedDescription: "Urban loft design maximizes space and light, creating dynamic living environments that adapt to modern city living while maintaining an artistic, warehouse-inspired aesthetic."
-    }
-  ];
 
   const dos = [
     {
