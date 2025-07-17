@@ -118,13 +118,17 @@ const CustomInteriorStyles = () => {
               >
                 <div className="relative overflow-hidden">
                   <img
-                    src={style.image}
-                    alt={style.name}
+                    src={
+    style.images && style.images.length > 0
+      ? style.images[0].image  // use it directly as it's already full URL
+      : '/fallback-image.jpg'
+  }
+                    alt={style.interior_name}
                     className="w-full h-64 object-cover hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-2xl font-bold text-white mb-2">{style.name}</h3>
+                    <h3 className="text-2xl font-bold text-white mb-2">{style.interior_name}</h3>
                   </div>
                 </div>
                 
@@ -184,15 +188,15 @@ const CustomInteriorStyles = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
                       <img
-                        src={style.image}
-                        alt={style.name}
+                        src={`http://localhost:8000${style.images[0]?.image}`}
+                        alt={style.interior_name}
                         className="w-full h-80 object-cover rounded-xl"
                       />
                     </div>
                     
                     <div>
-                      <h2 className="text-3xl font-bold text-white mb-4">{style.name}</h2>
-                      <p className="text-gray-300 mb-6 leading-relaxed">{style.detailedDescription}</p>
+                      <h2 className="text-3xl font-bold text-white mb-4">{style.interior_name}</h2>
+                      <p className="text-gray-300 mb-6 leading-relaxed">{style.description}</p>
                       
                       <div className="grid grid-cols-2 gap-4 mb-6">
                         <div className="bg-charcoal-700 p-4 rounded-lg text-center">

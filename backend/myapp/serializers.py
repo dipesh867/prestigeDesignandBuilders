@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Messages,Quotes,Image,Gallery,Interior,InteriorImage,InteriorStyle
+from .models import Messages,Quotes,Image,Gallery,InteriorStyleImage,InteriorStyle
 
 class MessagesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,18 +22,32 @@ class GallerySerializer(serializers.ModelSerializer):
         model = Gallery
         fields = '__all__'
 
-class InteriorImageSerializer(serializers.ModelSerializer):
+
+class InteriorStyleImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)  # ensures URL is returned, not just the filename
+
     class Meta:
-        model = InteriorImage
+        model = InteriorStyleImage
         fields = ['id', 'image']
 
-class InteriorSerializer(serializers.ModelSerializer):
-    images = InteriorImageSerializer(many=True, read_only=True)
-    class Meta:
-        model = Interior
-        fields = '__all__'
-
 class InteriorStyleSerializer(serializers.ModelSerializer):
+    images = InteriorStyleImageSerializer(many=True, required=False)
+
     class Meta:
         model = InteriorStyle
-        fields = '__all__'
+        fields = ['id', 'interior_name', 'description', 'budget', 'timeline', 'features', 'images']
+
+    def create(self, validated_data):
+        images_data = validated_data.pop('images', [])
+        interior_style = InteriorStyle.objects.create(**validated_data)
+        for image_data in images_data:
+            InteriorStyleImage.objects.create(interior_style=interior_style, **image_data)
+        return interior_style
+
+    def to_internal_value(self, data):
+        images = data.getlist('images') if hasattr(data, 'getlist') else data.get('images', [])
+        ret = super().to_internal_value(data)
+        if images:
+            ret['images'] = [{'image': image} for image in images]
+        return ret
+

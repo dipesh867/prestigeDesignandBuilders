@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { apiService, CustomerMessages, QuoteFormData, GalleryItem, InteriorStyle } from "@/services/api";
+import { apiService, CustomerMessages, QuoteFormData, GalleryItem, InteriorStyle ,loginSuperuser} from "@/services/api";
 import {
   Upload,
   Image,
@@ -49,7 +49,9 @@ const Admin = () => {
     "gallery"
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
 
   // Gallery state
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -75,7 +77,8 @@ const Admin = () => {
     timeline: "",
     features: [""],
   });
-  const [styleImageFile, setStyleImageFile] = useState<File | null>(null);
+ const [styleImageFile, setStyleImageFile] = useState<File | null>(null);
+const [styleImagePreview, setStyleImagePreview] = useState<string | null>(null);
 
   // Messages state
   const [customerMessages, setCustomerMessages] = useState<CustomerMessages[]>(
@@ -171,24 +174,18 @@ const handleDeleteMessage = async (id: string) => {
   }
 };
   
+const handleLogin = async () => {
+  const res = await loginSuperuser(username, password);
+  if (res.ok) {
+    setIsAuthenticated(true);  // <-- important
+    toast({ title: "Login Successful", description: "Welcome to admin panel!" });
+    navigate("/admin");
+  } else {
+    toast({ title: "Login Failed", description: "Invalid username or password.", variant: "destructive" });
+  }
+};
 
-  const handleLogin = () => {
-    if (password === "admin123") {
-      setIsAuthenticated(true);
-      toast({
-        title: "Login Successful",
-        description: "Welcome to the admin panel!",
-        variant: "default",
-        duration: 3000,
-      });
-    } else {
-      toast({
-        title: "Login Failed",
-        description: "Invalid password. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
+
   const handleLogout = () => {
     setIsAuthenticated(false);
     setPassword("");
@@ -213,18 +210,20 @@ const handleDeleteMessage = async (id: string) => {
     }
   };
 
-  const handleStyleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setStyleImageFile(file);
-      // Create a temporary URL for preview
-      const imageUrl = URL.createObjectURL(file);
-      setNewInteriorStyle({
-        ...newInteriorStyle,
-        image: imageUrl,
-      });
-    }
-  };
+  
+const handleStyleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0];
+  if (file) {
+    setStyleImageFile(file);
+    setStyleImagePreview(URL.createObjectURL(file));  // <-- Add this line
+
+    // Optional: update newInteriorStyle.image if you want
+    setNewInteriorStyle(prev => ({
+      ...prev,
+      image: URL.createObjectURL(file),
+    }));
+  }
+};
 
   const handleAddGalleryItem = async () => {
     if (!newGalleryItem.title || !galleryImageFile) {
@@ -265,41 +264,45 @@ const handleDeleteMessage = async (id: string) => {
     }
   };
 
-  const handleAddInteriorStyle = async () => {
-    if (!newInteriorStyle.name) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
-    }
-    // Only send the name for now (API only supports interior_name)
-    const response = await apiService.createInteriorStyle({ interior_name: newInteriorStyle.name });
-    if (response.data) {
-      setInteriorStyles((prev) => [response.data!, ...prev]);
-      setNewInteriorStyle({
-        name: "",
-        description: "",
-        image: "",
-        budget: "",
-        timeline: "",
-        features: [""],
-      });
-      setStyleImageFile(null);
-      toast({
-        title: "Interior Style Added",
-        description: "New interior style has been added successfully.",
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: response.error || "Failed to add interior style.",
-        variant: "destructive",
-      });
-    }
-  };
+const handleAddInteriorStyle = async () => {
+  const formData = new FormData();
+  formData.append("interior_name", newInteriorStyle.name);
+  formData.append("description", newInteriorStyle.description);
+  formData.append("budget", newInteriorStyle.budget);
+  formData.append("timeline", newInteriorStyle.timeline);
+  formData.append("features", JSON.stringify(newInteriorStyle.features));
+
+  if (styleImageFile) {
+    formData.append("images", styleImageFile);
+  }
+
+  const response = await apiService.createInteriorStyle(formData);
+
+  if (response.data) {
+    setInteriorStyles((prev) => [response.data!, ...prev]);
+    setNewInteriorStyle({
+      name: "",
+      description: "",
+      image: "",
+      budget: "",
+      timeline: "",
+      features: [""],
+    });
+    setStyleImageFile(null);
+    setStyleImagePreview(null); // reset preview
+    toast({
+      title: "Interior Style Added",
+      description: "New interior style has been added successfully.",
+    });
+  } else {
+    toast({
+      title: "Error",
+      description: response.error || "Failed to add interior style.",
+      variant: "destructive",
+    });
+  }
+};
+
 
   const handleDeleteGalleryItem = async (id: string | number) => {
     const response = await apiService.deleteGalleryItem(id);
@@ -378,6 +381,13 @@ const handleDeleteMessage = async (id: string) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Enter admin username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="bg-charcoal-700 border-charcoal-600 text-white"
+            />
             <Input
               type="password"
               placeholder="Enter admin password"
@@ -686,7 +696,7 @@ const handleDeleteMessage = async (id: string) => {
                   {newInteriorStyle.image && (
                     <div className="mt-2">
                       <img
-                        src={newInteriorStyle.image}
+                        src={styleImagePreview}
                         alt="Preview"
                         className="w-32 h-24 object-cover rounded-md border border-charcoal-600"
                       />
@@ -766,7 +776,11 @@ const handleDeleteMessage = async (id: string) => {
                       className="bg-charcoal-700 rounded-lg overflow-hidden"
                     >
                       <img
-                        src={style.description}
+                        src={
+    style.images && style.images.length > 0
+      ? style.images[0].image  // use it directly as it's already full URL
+      : '/fallback-image.jpg'
+  }
                         alt={style.interior_name}
                         className="w-full h-48 object-cover"
                       />

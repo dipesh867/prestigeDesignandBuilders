@@ -1,11 +1,14 @@
 from django.shortcuts import render,HttpResponse
 from rest_framework import generics, permissions
-from .models import Messages,Quotes,Image,Gallery,Interior,InteriorStyle
+from .models import Messages,Quotes,Image,Gallery,InteriorStyle,InteriorStyleImage
 from rest_framework import status
 from rest_framework.views import APIView
-from .serializers import MessagesSerializer,QuotesSerializer,GallerySerializer,InteriorSerializer,InteriorImageSerializer,InteriorStyleSerializer
+from .serializers import MessagesSerializer,QuotesSerializer,GallerySerializer,InteriorStyleSerializer
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth import authenticate, login,logout
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import ensure_csrf_cookie
 # Create your views here.
 def home(request):
     return HttpResponse("Welcome to the Home Page") 
@@ -72,30 +75,33 @@ class GalleryDeleteView(generics.DestroyAPIView):
     permission_classes = []
     authentication_classes = []
 
-# Interior APIs
-class InteriorListView(generics.ListAPIView):
-    queryset = Interior.objects.all().order_by('-id')
-    serializer_class = InteriorSerializer
+# # Interior APIs
+# class InteriorListView(generics.ListAPIView):
+#     queryset = InteriorStyle.objects.all().order_by('-id')
+#     serializer_class = InteriorSerializer
 
-class InteriorCreateView(generics.CreateAPIView):
-    queryset = Interior.objects.all()
-    serializer_class = InteriorSerializer
+# class InteriorCreateView(generics.CreateAPIView):
+#     queryset = InteriorStyle.objects.all()
+#     serializer_class = InteriorSerializer
 
-class InteriorDeleteView(generics.DestroyAPIView):
-    queryset = Interior.objects.all()
-    serializer_class = InteriorSerializer
-    lookup_field = "pk"
-    permission_classes = []
-    authentication_classes = []
+# class InteriorDeleteView(generics.DestroyAPIView):
+#     queryset = InteriorStyle.objects.all()
+#     serializer_class = InteriorSerializer
+#     lookup_field = "pk"
+#     permission_classes = []
+#     authentication_classes = []
 
 # InteriorStyle APIs
+class InteriorStyleCreateView(generics.CreateAPIView):
+    queryset = InteriorStyle.objects.all()
+    serializer_class = InteriorStyleSerializer
+    parser_classes = [MultiPartParser, FormParser]
+
+
 class InteriorStyleListView(generics.ListAPIView):
     queryset = InteriorStyle.objects.all().order_by('-id')
     serializer_class = InteriorStyleSerializer
 
-class InteriorStyleCreateView(generics.CreateAPIView):
-    queryset = InteriorStyle.objects.all()
-    serializer_class = InteriorStyleSerializer
 
 class InteriorStyleDeleteView(generics.DestroyAPIView):
     queryset = InteriorStyle.objects.all()
@@ -104,4 +110,34 @@ class InteriorStyleDeleteView(generics.DestroyAPIView):
     permission_classes = []
     authentication_classes = []
 
+
+
+@api_view(['POST'])
+def superuser_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(request, username=username, password=password)
+    if user and user.is_superuser:
+        login(request, user)  # Create session
+        return Response({"detail": "Login successful", "is_superuser": True})
+    return Response({"detail": "Invalid username or password"}, status=401)
+
+@api_view(['POST'])
+def superuser_logout(request):
+    logout(request)
+    return Response({"detail": "Logged out"})
+
+@api_view(['GET'])
+def user_profile(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return Response({
+            "username": request.user.username,
+            "is_superuser": True,
+        })
+    return Response({"detail": "Unauthorized"}, status=401)
+@ensure_csrf_cookie
+@api_view(['GET'])
+def get_csrf_token(request):
+    return Response({'detail': 'CSRF cookie set'})
 

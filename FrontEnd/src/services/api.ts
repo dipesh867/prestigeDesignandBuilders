@@ -54,17 +54,28 @@ export interface Interior {
   images?: { id: number; image: string }[];
 }
 
+export interface InteriorImage {
+  id: number;
+  image: string; // full image URL
+}
+
 export interface InteriorStyle {
   id: number;
   interior_name: string;
   description?: string;
   budget?: string;
   timeline?: string;
-  features?: any;
+  features?: string[];  // prefer string[] over any for features list
+  images: InteriorImage[]; // array of images with id and URL
 }
 
 // Future: Replace with actual API endpoints
 const API_BASE_URL ='http://localhost:8000/api';
+
+function getCsrfToken(): string | null {
+  const match = document.cookie.match(/csrftoken=([^;]+)/);
+  return match ? match[1] : null;
+}
 
 export const apiService = {
   // Contact form submission
@@ -327,26 +338,17 @@ getCustomerQuotes: async (): Promise<ApiResponse<QuoteFormData[]>> => {
       return { error: error.message || 'Failed to fetch interior styles' };
     }
   },
-createInteriorStyle: async (item: Partial<InteriorStyle> & { image?: File }): Promise<ApiResponse<InteriorStyle>> => {
+createInteriorStyle: async (formData: FormData): Promise<ApiResponse<any>> => {
   try {
-    const formData = new FormData();
-    formData.append("interior_name", item.interior_name || "");
-    formData.append("description", item.description || "");
-    formData.append("budget", item.budget || "");
-    formData.append("timeline", item.timeline || "");
-    if (item.image) formData.append("image", item.image);
-    if (item.features) formData.append("features", JSON.stringify(item.features));
-
     const response = await fetch(`${API_BASE_URL}/interior-style/`, {
       method: 'POST',
-      body: formData,
+      body: formData, // no headers!
     });
-
-    if (!response.ok) throw new Error(`Failed to create interior style: ${response.status}`);
-    const data: InteriorStyle = await response.json();
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.detail || "Failed to create style");
     return { data };
   } catch (error: any) {
-    return { error: error.message || 'Failed to create interior style' };
+    return { error: error.message };
   }
 },
   deleteInteriorStyle: async (id: string | number): Promise<ApiResponse<void>> => {
@@ -361,8 +363,53 @@ createInteriorStyle: async (item: Partial<InteriorStyle> & { image?: File }): Pr
       return { error: error.message || 'Failed to delete interior style' };
     }
   },
-}
 
+};
+
+
+export const loginSuperuser = async (username: string, password: string) => {
+  await fetch(`${API_BASE_URL}/csrf/`, {
+    credentials: "include",
+  });
+
+  const csrfToken = getCsrfToken();
+
+  return fetch(`${API_BASE_URL}/admin/login/`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken || "",
+    },
+    body: JSON.stringify({ username, password }),
+  });
+};
+
+
+export const logoutSuperuser = async () => {
+  return fetch(`${API_BASE_URL}/admin/logout/`, {
+    method: "POST",
+    credentials: "include",
+  });
+};
+
+
+
+
+export const fetchUserProfile = async () => {
+  await fetch(`${API_BASE_URL}/csrf/`, {
+    credentials: "include",
+  });
+
+  const csrfToken = getCsrfToken();
+
+  return fetch(`${API_BASE_URL}/user/profile/`, {
+    credentials: "include",
+    headers: {
+      "X-CSRFToken": csrfToken || "",
+    },
+  });
+};
 
 
 

@@ -15,6 +15,8 @@ import About from "./pages/About";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
+import RequireSuperuser from "@/components/RequireSuperuser";
+
 
 const queryClient = new QueryClient();
 
@@ -57,7 +59,10 @@ const AppContent = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/custom-interior-styles" element={<CustomInteriorStyles />} />
         <Route path="/about" element={<About />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/admin"
+          element={<Admin />}
+        />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
