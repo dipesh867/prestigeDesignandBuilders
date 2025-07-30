@@ -70,7 +70,7 @@ export interface InteriorStyle {
 }
 
 // Future: Replace with actual API endpoints
-const API_BASE_URL ='http://localhost:8000/api';
+const API_BASE_URL ='https://prestigedesignandbuilders.com/api';
 
 function getCsrfToken(): string | null {
   const match = document.cookie.match(/csrftoken=([^;]+)/);

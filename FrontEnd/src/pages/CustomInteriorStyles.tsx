@@ -187,8 +187,12 @@ const CustomInteriorStyles = () => {
                 <div className="p-8">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
-                      <img
-                        src={`http://localhost:8000${style.images[0]?.image}`}
+                                       <img
+                    src={
+    style.images && style.images.length > 0
+      ? style.images[0].image  // use it directly as it's already full URL
+      : '/fallback-image.jpg'
+  }
                         alt={style.interior_name}
                         className="w-full h-80 object-cover rounded-xl"
                       />
